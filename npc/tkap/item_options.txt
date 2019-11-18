@@ -213,6 +213,7 @@ StartTalking:
 	
 	if(.@at_least_one_option)
 	{
+		mesclear();
 		mes(.@result_str$);
 	}
 	else
