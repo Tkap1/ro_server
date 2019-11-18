@@ -195,9 +195,9 @@ StartTalking:
 			// Infinite loop somehow, debug
 			while(true)
 			{
-				dispbottom "chance: " + .@chance;
-				dispbottom "option: " + .options$[.@option_array_index];
-				dispbottom "dec: " + .@decrement;
+				// dispbottom "chance: " + .@chance;
+				// dispbottom "option: " + .options$[.@option_array_index];
+				// dispbottom "dec: " + .@decrement;
 				.@chance = .@chance - (.@chance * .@decrement / 100);
 				
 				if(rand(1, 10000) > .@chance)
