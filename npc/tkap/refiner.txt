@@ -1,0 +1,216 @@
+
+prontera,148,175,4	script	Refiner	4_DOG01,{
+	callsub(on_talk);
+	end;
+	
+OnInit:
+	.npc_name$ = "[ ^00ff00Refiner^000000 ]";
+end;
+
+on_talk:
+	
+	disable_items();
+	mes(.npc_name$);
+	mes("Select the item that you want to refine");
+	
+	setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
+	.@menu$ = "";
+	for (.@i = 1; .@i <= 10; ++.@i)
+	{
+		if(getequipisequiped(.@i))
+		{
+			.@menu$ += "[" + .@position$[.@i] + "] - " + getequipname(.@i) + ":";
+		}
+		else
+		{
+			.@menu$ += "^ff0000[" + .@position$[.@i] + "] - " + "Empty" + "^000000:";
+		}
+	}
+	
+	
+	// Select the part.
+	.@equip_index = select(.@menu$);
+	
+	
+	// Check if it's worn.
+	if (!getequipisequiped(.@equip_index)) {
+		mesclear();
+		mes(.npc_name$);
+		mes("Brah, your item ain't equipped.");
+		close();
+	} 
+	// Check if equipment is identified.
+	else if (!getequipisidentify(.@equip_index)) {
+		mesclear();
+		mes(.npc_name$);
+		mes("Brah, this equip ain't identified.");
+		close();
+	}
+	
+	//Check if the item is refinable...
+	if(!getequipisenableref(.@equip_index)) {
+		mesclear();
+		mes(.npc_name$);
+		mes "I don't think I can";
+		mes "refine this item at all...";
+		close;
+	}
+	
+	if(getequiprefinerycnt(.@equip_index) == 20)
+	{
+		mesclear();
+		mes(.npc_name$);
+		mes "I can't refine that";
+		mes "item anymore!";
+		close;
+	}
+	
+	
+	while(true)
+	{
+		
+		mesclear();
+		
+		.@refineitemid = getequipid(.@equip_index); // save id of the item
+		.@refinerycnt = getequiprefinerycnt(.@equip_index); //save refinery count
+		
+		if(.@refinerycnt < 10)
+		{
+			switch(getequipweaponlv(.@equip_index))
+			{
+				case 0: 	//Refine Armor
+					.@price = 2000;
+					.@material = 985;
+					.@safe = 4;
+					break;
+				case 1: 	//Refine Level 1 Weapon
+					.@price = 50;
+					.@material = 1010;
+					.@safe = 7;
+					break;
+				case 2: 	//Refine Level 2 Weapon
+					.@price = 200;
+					.@material = 1011;
+					.@safe = 6;
+					break;
+				case 3: 	//Refine Level 3 Weapon
+					.@price = 5000;
+					.@material = 984;
+					.@safe = 5;
+					break;
+				case 4: 	//Refine Level 4 Weapon
+					.@price = 20000;
+					.@material = 984;
+					.@safe = 4;
+					break;
+				case 5: 	//Refine other stuff?
+					.@price = 2000;
+					.@material = 985;
+					.@safe = 4;
+					break;
+			}
+		}
+		
+		else
+		{
+			if ((getequipweaponlv(.@equip_index) >= 1) && (getequipweaponlv(.@equip_index) <= 4))
+			{
+				.@material = 6224; //Bradium
+				.@price = 100000;
+			}
+			else
+			{
+				.@material = 6223; //Carnium
+				.@price = 100000;
+			}
+		}
+		
+		.@success_chance = getequippercentrefinery(.@equip_index);
+	
+		mes(.npc_name$);
+		mes("Zeny cost: " + "^0000ff" + .@price + "^000000");
+		mes("Item needed: " + "^0000ff" + getitemname(.@material) + "^000000");
+		mes("Chance of success: " + ((.@success_chance == 100) ? "^00ff00" + .@success_chance + "^000000" : "^ff0000" + .@success_chance + "^000000"));
+		
+		if(select("Upgrade:Exit") == 2)
+		{
+			mesclear();
+			mes(.npc_name$);
+			mes("Pussy");
+			close();
+		}
+		
+		// Check if it's worn.
+		if (!getequipisequiped(.@equip_index)) {
+			mesclear();
+			mes(.npc_name$);
+			mes("Brah, your item ain't equipped.");
+			close();
+		} 
+		// Check if equipment is identified.
+		else if (!getequipisidentify(.@equip_index)) {
+			mesclear();
+			mes(.npc_name$);
+			mes("Brah, this equip ain't identified.");
+			close();
+		}
+		
+		//Check if the item is refinable...
+		if(!getequipisenableref(.@equip_index)) {
+			mesclear();
+			mes(.npc_name$);
+			mes "I don't think I can";
+			mes "refine this item at all...";
+			close;
+		}
+		
+		if(.@refinerycnt == 20)
+		{
+			mesclear();
+			mes(.npc_name$);
+			mes "I can't refine that";
+			mes "item anymore!";
+			close;
+		}
+		
+		// Check for materials
+		if(Zeny < .@price)
+		{
+			mesclear();
+			mes(.npc_name$);
+			mes("You dont have enough zeny!");
+			close();
+		} 
+		if(countitem(.@material) < 1)
+		{
+			mesclear();
+			mes(.npc_name$);
+			mes("You dont have enoguh " + getitemname(.@material) + "!");
+			close();
+		}
+		
+		// Take the materials and zeny
+		delitem(.@material, 1);
+		Zeny -= .@price;
+		
+		// Failure
+		if(rand(1,100) > .@success_chance)
+		{
+			failedrefitem(.@equip_index);
+			mesclear();
+			mes(.npc_name$);
+			mes("A BUM!");
+			mes("The item was destroyed!");
+			close();
+		}
+		
+		// Success
+		else
+		{
+			successrefitem(.@equip_index);
+		}
+	}
+	
+end;
+
+}

@@ -1,0 +1,224 @@
+
+prontera,153,180,4	script	Enchanter	4_DOG01,{
+	callsub(StartTalking);
+	end;
+	
+OnInit:
+	
+	setarray(.options$[1],
+	"Max HP",
+	"Max SP",
+	"STR",
+	"AGI",
+	"VIT",
+	"INT",
+	"DEX",
+	"LUK",
+	"Max SP %",
+	"Max HP %",
+	"ATK %",
+	"Magic ATK %",
+	"ASPD %",
+	"ATK",
+	"Hit",
+	"MATK",
+	"DEF",
+	"MDEF",
+	"Flee",
+	"Crit Chance",
+	"Perfect Dodge",
+	"Crit ATK",
+	"Variable Cast Time Reduction %",
+	"After Cast Delay Reduction %");
+	
+	setarray(.option_constants[1],
+	VAR_MAXHPAMOUNT,
+	VAR_MAXSPAMOUNT,
+	VAR_STRAMOUNT,
+	VAR_AGIAMOUNT,
+	VAR_VITAMOUNT,
+	VAR_INTAMOUNT,
+	VAR_DEXAMOUNT,
+	VAR_LUKAMOUNT,
+	VAR_MAXSPPERCENT,
+	VAR_MAXHPPERCENT,
+	VAR_ATKPERCENT,
+	VAR_MAGICATKPERCENT,
+	VAR_PLUSASPDPERCENT,
+	VAR_ATTPOWER,
+	VAR_HITSUCCESSVALUE,
+	VAR_ATTMPOWER,
+	VAR_ITEMDEFPOWER,
+	VAR_MDEFPOWER,
+	VAR_AVOIDSUCCESSVALUE,
+	VAR_CRITICALSUCCESSVALUE,
+	VAR_PLUSAVOIDSUCCESSVALUE,
+	DAMAGE_CRI_TARGET,
+	DEC_SPELL_CAST_TIME,
+	DEC_SPELL_DELAY_TIME);
+	
+	setarray(.start_values[1],
+	100,	// Max HP
+	100,	// Max SP
+	1,		// STR
+	1,		// AGI		
+	1,		// VIT
+	1,		// INT
+	1,		// DEX
+	1,		// LUK
+	3,		// Max SP %
+	3,		// Max HP %
+	1,		// ATK %
+	1,		// MATK %
+	3,		// ASPD %
+	10,		// ATK
+	10,		// HIT
+	10,		// MATK
+	5,		// DEF
+	5,		// MDEF
+	3,		// FLEE
+	1,		// CRIT
+	1,		// Perfect Dodge
+	5,		// CRIT ATK
+	3,		// VCT
+	3);		// After cast delay
+	
+	// Tkap: Treated as percentages
+	setarray(.decrements[1],
+	1,	// Max HP
+	1,	// Max SP
+	30,		// STR
+	30,		// AGI		
+	30,		// VIT
+	30,		// INT
+	30,		// DEX
+	30,		// LUK
+	30,		// Max SP %
+	30,		// Max HP %
+	40,		// ATK %
+	40,		// MATK %
+	30,		// ASPD %
+	10,		// ATK
+	5,		// HIT
+	10,		// MATK
+	20,		// DEF
+	20,		// MDEF
+	20,		// FLEE
+	30,		// CRIT
+	99,		// Perfect Dodge
+	20,		// CRIT ATK
+	40,		// VCT
+	40);		// After cast delay
+	
+	setarray(.stat_increments[1],
+	10,	// Max HP
+	10,	// Max SP
+	1,		// STR
+	1,		// AGI		
+	1,		// VIT
+	1,		// INT
+	1,		// DEX
+	1,		// LUK
+	1,		// Max SP %
+	1,		// Max HP %
+	1,		// ATK %
+	1,		// MATK %
+	1,		// ASPD %
+	5,		// ATK
+	5,		// HIT
+	5,		// MATK
+	2,		// DEF
+	2,		// MDEF
+	2,		// FLEE
+	1,		// CRIT
+	1,		// Perfect Dodge
+	1,		// CRIT ATK
+	1,		// VCT
+	1);		// After cast delay
+	end;
+	
+StartTalking:
+	.@name$ = _("[ ^990099Enchanter^000000 ]");
+	// disable_items();
+	mes(.@name$);
+	mes("Select which item to enchant");
+	// Build the Menu.
+	setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
+	.@menu$ = "";
+	for (.@i = 1; .@i <= 10; ++.@i)
+	{
+		if(getequipisequiped(.@i))
+		{
+			.@menu$ += "[" + .@position$[.@i] + "] - " + getequipname(.@i) + ":";
+		}
+		else
+		{
+			.@menu$ += "^ff0000[" + .@position$[.@i] + "] - " + "Empty" + "^000000:";
+		}
+	}
+	
+	// Select the part.
+	.@equip_index = select(.@menu$);
+	
+	
+	// Check if it's worn.
+	if (!getequipisequiped(.@equip_index)) {
+		mes("Brah, your item ain't equipped.");
+		close();
+	// Check if it allows options
+	} else if (!getequipisenableopt(.@equip_index)) {
+		mes("Brah, this equip can't have options.");
+		close();
+	// Check if equipment is identified.
+	} else if (!getequipisidentify(.@equip_index)) {
+		mes("Brah, this equip ain't identified.");
+		close();
+	}
+	
+	.@at_least_one_option = 0;
+	.@result_str$ = "";
+	
+	
+	for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
+	{
+		.@opt = getequipoption(.@equip_index, .@i, IT_OPT_INDEX);
+		if(.@opt <= 0)
+		{
+			.@at_least_one_option = 1;
+			.@option_array_index = rand(1, getarraysize(.options$) - 1);
+			.@option_index = .option_constants[.@option_array_index];
+			.@value = .start_values[.@option_array_index];
+			.@decrement = .decrements[.@option_array_index];
+			.@increment = .stat_increments[.@option_array_index];
+			.@chance = 10000;
+			
+			// Infinite loop somehow, debug
+			while(true)
+			{
+				dispbottom "chance: " + .@chance;
+				dispbottom "option: " + .options$[.@option_array_index];
+				dispbottom "dec: " + .@decrement;
+				.@chance = .@chance - (.@chance * .@decrement / 100);
+				
+				if(rand(1, 10000) > .@chance)
+				{
+					.@result_str$ += "You got +" + .@value + " " + .options$[.@option_array_index] + "\n";
+					break;
+				}
+				.@value = .@value + .@increment;
+			}
+			setequipoption(.@equip_index, .@i, .@option_index, .@value);
+		}
+	}
+	
+	if(.@at_least_one_option)
+	{
+		mes(.@result_str$);
+	}
+	else
+	{
+		mes("That item already has 5 modifiers!");
+	}
+	
+	close();
+}

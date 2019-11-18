@@ -1,0 +1,26 @@
+
+prontera,164,190,4	script	Identifier	4_DOG01,{
+	callsub(on_talk);
+	end;
+	
+OnInit:
+
+end;
+
+on_talk:
+	getinventorylist();
+	for(.@i = 0; .@i < @inventorylist_count; .@i++)
+	{
+		if(!@inventorylist_identify[.@i])
+		{
+			identifyidx(.@i);
+		}
+	}
+
+end;
+
+
+
+
+
+}

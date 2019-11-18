@@ -1,0 +1,81 @@
+
+
+-	script	chest_spawns	FAKE_NPC,1,1,{
+	
+OnInit:
+	
+	setarray(.ids[0],
+	1324,
+	1325,
+	1326,
+	1327,
+	1328,
+	1329,
+	1330,
+	1331,
+	1332,
+	1333,
+	1334,
+	1335,
+	1336,
+	1337,
+	1338,
+	1339,
+	1340,
+	1341,
+	1342,
+	1343,
+	1344,
+	1345,
+	1346,
+	1347,
+	1348,
+	1349,
+	1350,
+	1351,
+	1352,
+	1353,
+	1354,
+	1355,
+	1356,
+	1357,
+	1358,
+	1359,
+	1360,
+	1361,
+	1362,
+	1363,
+	1938,
+	1939,
+	1940,
+	1941,
+	1942,
+	1943,
+	1944,
+	1945,
+	1946
+	);
+	
+	.chance = 10000000;
+	
+end;
+	
+OnNPCKillEvent:
+	
+	.@mob_hp = getmonsterinfo(killedrid, MOB_MAXHP);
+	
+	.@temp_chance = .@mob_hp * 5;
+	// .@temp_chance = .chance;	// Always spawns a chest, testing only
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		.@mob_to_spawn_id = .ids[rand(0, getarraysize(.ids) - 1)];
+		.@mob_to_spawn_name$ = getmonsterinfo(.@mob_to_spawn_id, MOB_NAME);
+		monster("this", -1, -1, .@mob_to_spawn_name$, .@mob_to_spawn_id, 1);
+		specialeffect(EF_COIN, AREA, playerattached());
+	}
+	
+end;
+	
+	
+	
+}

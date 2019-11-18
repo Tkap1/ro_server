@@ -1,0 +1,98 @@
+refine
+treasure spawns
+kro p2w items
+
+
+
+//==========	DONE	=============\\
+Identify npc
+
+
+Asgard Legends changes:
+Storm Gust no freeze
+Storm gust no knockback
+
+
+Energy coat FCT reduce from 5000ms to 500ms
+
+
+Killing enemies can spawn WoE treasure chests, the higher Max HP the mob has, the higher the chances
+currently you get a 100% chance if the mob has 10,000,000 HP or more
+
+
+
+Adding things here that are not costumes
+https://www.novaragnarok.com/wiki/Nova_Shop#Hats
+
+18522
+18597
+5379
+18540
+5680
+18750
+18651
+5591
+18934
+5181
+5765
+5557
+5800
+5377
+5314
+18885
+5483
+5462
+5490
+5564
+5278
+5276
+5208
+18542
+5211
+5465
+5467
+5372
+5311
+5420
+5151
+5359
+5466
+5357
+5421
+5641
+5389
+5592
+5401
+5471
+5315
+5463
+5361
+5362
+5574
+5477
+18693
+5388
+5283
+5305
+18666
+5322
+5498
+18646
+5563
+18539
+18668
+5897
+5898
+5899
+5900
+5901
+5902
+5903
+5904
+5905
+5906
+18791
+18793
+18794
+18795
+5907
