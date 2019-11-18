@@ -1105,7 +1105,7 @@ payon,143,165,0	script	Repairman#pay	4_M_ORIENT01,{
 	end;
 }
 
-prt_in,63,54,2	script	Repairman#prt	4_M_04,{
+prontera,150,179,4	script	Repairman#prt	4_M_04,{
 	callfunc "repairmain","Grendal";
 	end;
 }

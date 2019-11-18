@@ -253,7 +253,6 @@ alberta,198,129,4	duplicate(Valerie#sign)	Valerie#min	2_BULLETIN_BOARD
 in_rogue,376,104,4	duplicate(Valerie#sign)	Valerie#sc	2_BULLETIN_BOARD
 ve_in,244,122,4	duplicate(Valerie#sign)	Valerie#shu	2_BULLETIN_BOARD
 xmas,166,209,4	duplicate(Valerie#sign)	Valerie#wan	2_BULLETIN_BOARD
-prontera,150,179,4	duplicate(Valerie#sign)	Valerie#prontera	2_BULLETIN_BOARD
 
 sec_in02,12,40,5	script	Job Repair	1_M_LIBRARYMASTER,1,1,{
 	callfunc "F_GM_NPC";
