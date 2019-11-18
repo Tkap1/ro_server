@@ -1,5 +1,5 @@
 
-prontera,148,175,4	script	Refiner	4_DOG01,{
+prontera,148,175,4	script	Refiner	4_M_DWARF,{
 	callsub(on_talk);
 	end;
 	
