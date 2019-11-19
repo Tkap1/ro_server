@@ -110,6 +110,7 @@ static int skill_name2id(const char *name)
 /// Returns the skill's array index, or 0 (Unknown Skill).
 static int skill_get_index(int skill_id)
 {
+	
 	// avoid ranges reserved for mapping guild/homun/mercenary skills
 	if( (skill_id >= GD_SKILLRANGEMIN && skill_id <= GD_SKILLRANGEMAX)
 	||  (skill_id >= HM_SKILLRANGEMIN && skill_id <= HM_SKILLRANGEMAX)
@@ -134,7 +135,8 @@ static int skill_get_index(int skill_id)
 			skill_id = (1077) + skill_id - 2201;
 		else if ( skill_id < 3036 ) // 2549 - 3000 are empty - 1020+57+348
 			skill_id = (1425) + skill_id - 3001;
-		else if ( skill_id < 5044 ) // 3036 - 5000 are empty - 1020+57+348+35
+		// else if ( skill_id < 5044 ) // 3036 - 5000 are empty - 1020+57+348+35
+		else if ( skill_id < 6000 ) // Tkap: Increased this check to accomodate for AB_VIPERATUM
 			skill_id = (1460) + skill_id - 5001;
 		else
 			ShowWarning("skill_get_index: skill id '%d' is not being handled!\n",skill_id);
@@ -9179,6 +9181,17 @@ static int skill_castend_nodamage_id(struct block_list *src, struct block_list *
 				map->foreachinrange(skill->area_sub, src, skill->get_splash(skill_id, skill_lv), BL_CHAR,
 					src, skill_id, skill_lv, tick, flag|BCT_ENEMY|1, skill->castend_nodamage_id);
 				clif->skill_nodamage(src, bl, skill_id, skill_lv, 1);
+			}
+			break;
+			
+		case AB_VIPERATUM:
+			if( flag&1 )
+				sc_start(src, bl, type, 100, skill_lv, skill->get_time(skill_id, skill_lv));
+			else {
+				map->foreachinrange(skill->area_sub, src, skill->get_splash(skill_id, skill_lv), BL_CHAR,
+					src, skill_id, skill_lv, tick, flag|BCT_ENEMY|1, skill->castend_nodamage_id);
+				clif->skill_nodamage(src, bl, skill_id, skill_lv, 1);
+				clif->specialeffect(bl,85,AREA); // Tkap: Added: This is so a lexaterna effect is displayed on top of  the caster
 			}
 			break;
 

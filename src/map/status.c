@@ -220,6 +220,8 @@ static void initChangeTables(void)
 	status->set_sc( PR_GLORIA            , SC_GLORIA          , SI_GLORIA          , SCB_LUK );
 	add_sc( PR_LEXDIVINA         , SC_SILENCE         );
 	status->set_sc( PR_LEXAETERNA        , SC_LEXAETERNA      , SI_LEXAETERNA      , SCB_NONE );
+	// status->set_sc( AB_VIPERATUM        , SC_LEXAETERNA      , SI_LEXAETERNA      , SCB_NONE );
+	set_sc_with_vfx( AB_VIPERATUM            , SC_LEXAETERNA          , SI_LEXAETERNA          , SCB_NONE ); // Tkap
 	add_sc( WZ_METEOR            , SC_STUN            );
 	add_sc( WZ_VERMILION         , SC_BLIND           );
 	add_sc( WZ_FROSTNOVA         , SC_FREEZE          );
