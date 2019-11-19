@@ -60,14 +60,18 @@ OnInit:
 	756,	// Rough oridecon
 	757,	// Rough elunium
 	984,	// Oridecon
-	985 	// Elunium
+	985, 	// Elunium
+	6223,	// Carnium
+	6224	// Bradium
 	);
 	
 	setarray(.materials_chance_multiplier[0],
 	50,	// Rough oridecon
 	50,	// Rough elunium
 	10,	// Oridecon
-	10 	// Elunium
+	10, 	// Elunium
+	5,	// Carnium
+	5	// Bradium
 	);
 	
 	.chance = 10000000;
