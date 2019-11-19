@@ -56,7 +56,22 @@ OnInit:
 	1946
 	);
 	
+	setarray(.materials[0],
+	756,	// Rough oridecon
+	757,	// Rough elunium
+	984,	// Oridecon
+	985 	// Elunium
+	);
+	
+	setarray(.materials_chance_multiplier[0],
+	50,	// Rough oridecon
+	50,	// Rough elunium
+	10,	// Oridecon
+	10 	// Elunium
+	);
+	
 	.chance = 10000000;
+	.chest_chance_multiplier = 5;
 	
 end;
 	
@@ -64,7 +79,8 @@ OnNPCKillEvent:
 	
 	.@mob_hp = getmonsterinfo(killedrid, MOB_MAXHP);
 	
-	.@temp_chance = .@mob_hp * 5;
+	// Chest spawn roll
+	.@temp_chance = .@mob_hp * .chest_chance_multiplier;
 	// .@temp_chance = .chance;	// Always spawns a chest, testing only
 	if(rand(1, .chance) <= .@temp_chance)
 	{
@@ -74,8 +90,18 @@ OnNPCKillEvent:
 		specialeffect(EF_COIN, AREA, playerattached());
 	}
 	
+	// Materials roll
+	for(.@i = 0; .@i < getarraysize(.materials); .@i++)
+	{
+		.@temp_chance = .@mob_hp * .materials_chance_multiplier[.@i];
+		if(rand(1, .chance) <= .@temp_chance)
+		{
+			getitem(.materials[.@i], 1);
+			announce(strcharinfo(PC_NAME)+" just got " + getitemname(.materials[.@i]), bc_blue|bc_all);
+		}
+	}
+	
+	
 end;
-	
-	
 	
 }
