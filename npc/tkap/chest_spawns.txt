@@ -69,7 +69,7 @@ OnInit:
 	50,	// Rough oridecon
 	50,	// Rough elunium
 	10,	// Oridecon
-	10, 	// Elunium
+	10,	// Elunium
 	5,	// Carnium
 	5	// Bradium
 	);
