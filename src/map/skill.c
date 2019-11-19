@@ -4552,6 +4552,7 @@ static int skill_castend_damage_id(struct block_list *src, struct block_list *bl
 			break;
 
 		// Splash attack skills.
+		case AB_ADORAMUS:	// Tkap: Maybe this gives splash to adoramus?
 		case AS_GRIMTOOTH:
 		case MC_CARTREVOLUTION:
 		case NPC_SPLASHATTACK:
@@ -4846,7 +4847,7 @@ static int skill_castend_damage_id(struct block_list *src, struct block_list *bl
 		case NJ_KOUENKA:
 		case NJ_HYOUSENSOU:
 		case NJ_HUUJIN:
-		case AB_ADORAMUS:
+		// case AB_ADORAMUS: // Tkap: Removing it from here so it doesnt do damage twice maybe?
 		case AB_RENOVATIO:
 		case AB_HIGHNESSHEAL:
 		case AB_DUPLELIGHT_MAGIC:
