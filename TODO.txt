@@ -21,7 +21,42 @@ currently you get a 100% chance if the mob has 10,000,000 HP or more
 
 
 https://irowiki.org/wiki/Kafra_Shop_Box_Archives
-Adding things from that link do not drop normally
+Adding things from that link if they do not drop normally
 
 ids:
 
+19114
+18877
+18799
+18746
+18616
+18564
+28386
+28394
+
+do 20799 combos
+
+add 28502 and its combos
+
+MAYBE ADD LATER LAZY:
+19299
+
+ADD TO DROPS:
+1837
+2192
+2198
+2202
+2576
+2589
+5361
+5973
+15072
+15169
+18563
+18564
+18603
+18611
+20783
+20799
+28377
+28910

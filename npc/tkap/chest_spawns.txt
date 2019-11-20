@@ -76,6 +76,29 @@ OnInit:
 	
 	.chance = 10000000;
 	.chest_chance_multiplier = 5;
+	.p2w_chance_multiplier = 10;
+	
+	// P2W items
+	setarray(.p2w_items[0],
+	1837,
+	2192,
+	2198,
+	2202,
+	2576,
+	2589,
+	5361,
+	5973,
+	15072,
+	15169,
+	18563,
+	18564,
+	18603,
+	18611,
+	20783,
+	20799,
+	28377,
+	28910
+	);
 	
 end;
 	
@@ -105,6 +128,14 @@ OnNPCKillEvent:
 		}
 	}
 	
+	// P2W roll
+	.@temp_chance = .@mob_hp * .p2w_chance_multiplier;
+	// dispbottom .@temp_chance;
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		.@p2w_id = rand(0, getarraysize(.p2w_items) - 1);
+		getitem(.p2w_items[.@p2w_id], 1);
+	}
 	
 end;
 	
