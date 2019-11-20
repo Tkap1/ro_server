@@ -77,6 +77,7 @@ OnInit:
 	.chance = 10000000;
 	.chest_chance_multiplier = 5;
 	.p2w_chance_multiplier = 10;
+	.mora_coin_multiplier = 1;
 	
 	// P2W items
 	setarray(.p2w_items[0],
@@ -137,6 +138,13 @@ OnNPCKillEvent:
 	{
 		.@p2w_id = rand(0, getarraysize(.p2w_items) - 1);
 		getitem(.p2w_items[.@p2w_id], 1);
+	}
+	
+	// Akuma's mora coins xq llora
+	.@temp_chance = .@mob_hp * .mora_coin_multiplier;
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		getitem(6380, 1);
 	}
 	
 end;
