@@ -1,0 +1,79 @@
+
+prontera,146,188,4	script	P2W Coin Exchanger	4_DOG01,{
+	callsub(on_talk);
+	end;
+	
+OnInit:
+	
+	// P2W items
+	setarray(.p2w_items[0],
+	1837,
+	2192,
+	2198,
+	2202,
+	2576,
+	2589,
+	5361,
+	5564,
+	5898,
+	5966,
+	5973,
+	15072,
+	15169,
+	18563,
+	18564,
+	18603,
+	18611,
+	20783,
+	20799,
+	28377,
+	28910
+	);
+	
+	.menu$ = "";
+	for(.@i = 0; .@i < getarraysize(.p2w_items); .@i++)
+	{
+		.menu$ += getitemname(.p2w_items[.@i]) + ":";
+	}
+	.menu$ += "Nevermind";
+	
+	.npc_name$ = "[ ^00ff00P2W Coin Exchanger^000000 ]";
+	
+end;
+	
+on_talk:
+
+
+	disable_items();
+	dispbottom .npc_name$;
+	dispbottom .menu$;
+	
+	mes(.npc_name$);
+	mes("I can give you an item for 1 P2W coin");
+	.@choice = select(.menu$);
+	
+	if(.@choice == getarraysize(.p2w_items) + 1)
+	{
+		mes("Okay, bye!");
+		close();
+	}
+	else
+	{
+		if(countitem(30000) > 0)
+		{
+			delitem(30000, 1);
+			getitem(.p2w_items[.@choice - 1], 1);
+			mes("There you go!");
+			close();
+		}
+		else
+		{
+			mes("You don't have enough P2W coins!");
+			close();
+		}
+	}
+	
+	
+end;		
+		
+}
