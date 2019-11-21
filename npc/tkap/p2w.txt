@@ -38,7 +38,7 @@ OnInit:
 	}
 	.menu$ += "Nevermind";
 	
-	.npc_name$ = "[ ^00ff00P2W Coin Exchanger^000000 ]";
+	.npc_name$ = "[ ^990099P2W Coin Exchanger^000000 ]";
 	
 end;
 	

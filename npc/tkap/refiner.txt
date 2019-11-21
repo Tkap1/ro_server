@@ -4,7 +4,7 @@ prontera,148,175,4	script	Refiner	4_M_DWARF,{
 	end;
 	
 OnInit:
-	.npc_name$ = "[ ^00ff00Refiner^000000 ]";
+	.npc_name$ = "[ ^990099Refiner^000000 ]";
 end;
 
 on_talk:

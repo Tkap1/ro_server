@@ -139,20 +139,22 @@ OnInit:
 	1,		// VCT
 	1);		// After cast delay
 	
+	.npc_name$ = "[ ^990099Enchanter^000000 ]";
+	
 	end;
 	
 	
 on_talk:
 
 	disable_items();
-	.@name$ = _("[ ^990099Enchanter^000000 ]");
-	mes(.@name$);
+	mes(.npc_name$);
 	mes("What do you want?");
 	.@choice = select("Enchant:Re-roll:Re-roll values");
 	
 	if(.@choice == 1)
 	{
 		mesclear();
+		mes(.npc_name$);
 		mes("Select which item to enchant");
 		
 		// Build the Menu.
@@ -207,9 +209,6 @@ on_talk:
 				// Infinite loop somehow, debug
 				while(true)
 				{
-					// dispbottom "chance: " + .@chance;
-					// dispbottom "option: " + .options$[.@option_array_index];
-					// dispbottom "dec: " + .@decrement;
 					.@chance = .@chance - (.@chance * .@decrement / 100);
 					
 					if(rand(1, 10000) > .@chance)
@@ -293,9 +292,6 @@ on_talk:
 					// Infinite loop somehow, debug
 					while(true)
 					{
-						// dispbottom "chance: " + .@chance;
-						// dispbottom "option: " + .options$[.@option_array_index];
-						// dispbottom "dec: " + .@decrement;
 						.@chance = .@chance - (.@chance * .@decrement / 100);
 						
 						if(rand(1, 10000) > .@chance)
@@ -390,10 +386,6 @@ on_talk:
 								
 								if(rand(1, 10000) > .@chance)
 								{
-									dispbottom .@i;
-									dispbottom .@j;
-									dispbottom .options$[.@j];
-									dispbottom "-------";
 									.@result_str$ += .options$[.@j] + ": " + .@old_value + " -> ^00ff00" + .@value + "^000000\n";
 									break;
 								}
