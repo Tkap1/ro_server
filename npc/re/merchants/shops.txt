@@ -448,7 +448,7 @@ OnInit:
 	sellitem Granpa_Beard;
 }
 
-// Tkap
+// Tkap:
 prontera,149,188,4	trader	Tool Dealer#prt_city	1_M_INNKEEPER,{
 OnInit:
 	sellitem Spectacles;
@@ -458,6 +458,7 @@ OnInit:
 	sellitem Yellow_Potion;
 	sellitem White_Potion;
 	sellitem Green_Potion;
+	sellitem Leaf_Of_Yggdrasil;
 	sellitem Center_Potion;
 	sellitem Awakening_Potion;
 	sellitem Wing_Of_Fly;
