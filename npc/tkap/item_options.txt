@@ -1,11 +1,12 @@
 
 prontera,153,180,4	script	Enchanter	4_DOG01,{
-	callsub(StartTalking);
+	callsub(on_talk);
 	end;
 	
 OnInit:
 	
 	.reroll_price = 500000;
+	.reroll_values_price = 2000000;
 	
 	setarray(.options$[1],
 	"Max HP",
@@ -19,19 +20,19 @@ OnInit:
 	"Max SP %",
 	"Max HP %",
 	"ATK %",
-	"Magic ATK %",
+	"MATK %",
 	"ASPD %",
 	"ATK",
-	"Hit",
+	"HIT",
 	"MATK",
 	"DEF",
 	"MDEF",
 	"Flee",
-	"Crit Chance",
+	"CRIT",
 	"Perfect Dodge",
-	"Crit ATK",
-	"Variable Cast Time Reduction %",
-	"After Cast Delay Reduction %");
+	"CRIT ATK",
+	"VCT %",
+	"ACD %");
 	
 	setarray(.option_constants[1],
 	VAR_MAXHPAMOUNT,
@@ -137,14 +138,17 @@ OnInit:
 	1,		// CRIT ATK
 	1,		// VCT
 	1);		// After cast delay
+	
 	end;
 	
-StartTalking:
+	
+on_talk:
+
+	disable_items();
 	.@name$ = _("[ ^990099Enchanter^000000 ]");
-	// disable_items();
 	mes(.@name$);
 	mes("What do you want?");
-	.@choice = select("Enchant:Re-roll");
+	.@choice = select("Enchant:Re-roll:Re-roll values");
 	
 	if(.@choice == 1)
 	{
@@ -183,10 +187,9 @@ StartTalking:
 			mes("Brah, this equip ain't identified.");
 			close();
 		}
-		
+
 		.@at_least_one_option = 0;
 		.@result_str$ = "";
-		
 		
 		for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
 		{
@@ -258,61 +261,163 @@ StartTalking:
 		// Select the part.
 		.@equip_index = select(.@menu$);
 		
-		// Check if it's worn.
-		if (!getequipisequiped(.@equip_index)) {
-			mes("Brah, your item ain't equipped.");
-			close();
-		// Check if it allows options
-		} else if (!getequipisenableopt(.@equip_index)) {
-			mes("Brah, this equip can't have options.");
-			close();
-		// Check if equipment is identified.
-		} else if (!getequipisidentify(.@equip_index)) {
-			mes("Brah, this equip ain't identified.");
-			close();
-		}
-		
-		if(Zeny >= .reroll_price)
+		do
 		{
-			Zeny -= .reroll_price;
-			.@result_str$ = "";
-			for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
-			{
-				.@option_array_index = rand(1, getarraysize(.options$) - 1);
-				.@option_index = .option_constants[.@option_array_index];
-				.@value = .start_values[.@option_array_index];
-				.@decrement = .decrements[.@option_array_index];
-				.@increment = .stat_increments[.@option_array_index];
-				.@chance = 10000;
-				
-				// Infinite loop somehow, debug
-				while(true)
-				{
-					// dispbottom "chance: " + .@chance;
-					// dispbottom "option: " + .options$[.@option_array_index];
-					// dispbottom "dec: " + .@decrement;
-					.@chance = .@chance - (.@chance * .@decrement / 100);
-					
-					if(rand(1, 10000) > .@chance)
-					{
-						.@result_str$ += "You got +" + .@value + " " + .options$[.@option_array_index] + "\n";
-						break;
-					}
-					.@value = .@value + .@increment;
-				}
-				setequipoption(.@equip_index, .@i, .@option_index, .@value);
+			// Check if it's worn.
+			if (!getequipisequiped(.@equip_index)) {
+				mes("Brah, your item ain't equipped.");
+				close();
+			// Check if it allows options
+			} else if (!getequipisenableopt(.@equip_index)) {
+				mes("Brah, this equip can't have options.");
+				close();
+			// Check if equipment is identified.
+			} else if (!getequipisidentify(.@equip_index)) {
+				mes("Brah, this equip ain't identified.");
+				close();
 			}
-			mesclear();
-			mes(.@result_str$);
-			close();
-		}
-		else
+			
+			if(Zeny >= .reroll_price)
+			{
+				Zeny -= .reroll_price;
+				.@result_str$ = "";
+				for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
+				{
+					.@option_array_index = rand(1, getarraysize(.options$) - 1);
+					.@option_index = .option_constants[.@option_array_index];
+					.@value = .start_values[.@option_array_index];
+					.@decrement = .decrements[.@option_array_index];
+					.@increment = .stat_increments[.@option_array_index];
+					.@chance = 10000;
+					
+					// Infinite loop somehow, debug
+					while(true)
+					{
+						// dispbottom "chance: " + .@chance;
+						// dispbottom "option: " + .options$[.@option_array_index];
+						// dispbottom "dec: " + .@decrement;
+						.@chance = .@chance - (.@chance * .@decrement / 100);
+						
+						if(rand(1, 10000) > .@chance)
+						{
+							.@result_str$ += "You got +" + .@value + " " + .options$[.@option_array_index] + "\n";
+							break;
+						}
+						.@value = .@value + .@increment;
+					}
+					setequipoption(.@equip_index, .@i, .@option_index, .@value);
+				}
+				mesclear();
+				mes(.@result_str$);
+			}
+			else
+			{
+				mesclear();
+				mes("You don't have enough zeny!");
+				close();
+			}
+		} while(select("Re-roll again:Exit") == 1);
+		
+		mesclear();
+		mes("Okay, bye!");
+		close();
+	}
+	
+	// Re-roll values
+	else if(.@choice == 3)
+	{
+		mesclear();
+		mes("Select which item you want to re-roll the values of");
+		mes("Price is: " + .reroll_values_price + " zeny");
+		
+		// Build the Menu.
+		setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
+		.@menu$ = "";
+		for (.@i = 1; .@i <= 10; ++.@i)
 		{
-			mesclear();
-			mes("You don't have enough zeny!");
-			close();
+			if(getequipisequiped(.@i))
+			{
+				.@menu$ += "[" + .@position$[.@i] + "] - " + getequipname(.@i) + ":";
+			}
+			else
+			{
+				.@menu$ += "^ff0000[" + .@position$[.@i] + "] - " + "Empty" + "^000000:";
+			}
 		}
 		
+		// Select the part.
+		.@equip_index = select(.@menu$);
 		
+		do
+		{
+			// Check if it's worn.
+			if (!getequipisequiped(.@equip_index)) {
+				mes("Brah, your item ain't equipped.");
+				close();
+			// Check if it allows options
+			} else if (!getequipisenableopt(.@equip_index)) {
+				mes("Brah, this equip can't have options.");
+				close();
+			// Check if equipment is identified.
+			} else if (!getequipisidentify(.@equip_index)) {
+				mes("Brah, this equip ain't identified.");
+				close();
+			}
+			
+			if(Zeny >= .reroll_values_price)
+			{
+				Zeny -= .reroll_values_price;
+				.@result_str$ = "";
+				for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
+				{
+					.@current_option = getequipoption(.@equip_index, .@i, IT_OPT_INDEX);
+					
+					// Find the index in our array of the option that is already here.
+					for (.@j = 1; .@j < getarraysize(.option_constants); ++.@j)
+					{
+						.@temp_option = .option_constants[.@j];
+						if(.@temp_option == .@current_option)
+						{
+							.@old_value = getequipoption(.@equip_index, .@i, IT_OPT_VALUE);
+							.@decrement = .decrements[.@j];
+							.@increment = .stat_increments[.@j];
+							.@value = .start_values[.@j];
+							.@chance = 10000;
+							
+							while(true)
+							{
+								.@chance = .@chance - (.@chance * .@decrement / 100);
+								
+								if(rand(1, 10000) > .@chance)
+								{
+									dispbottom .@i;
+									dispbottom .@j;
+									dispbottom .options$[.@j];
+									dispbottom "-------";
+									.@result_str$ += .options$[.@j] + ": " + .@old_value + " -> ^00ff00" + .@value + "^000000\n";
+									break;
+								}
+								.@value = .@value + .@increment;
+							}
+							setequipoption(.@equip_index, .@i, .@current_option, .@value);
+							break;
+						}
+					}
+				}
+				mesclear();
+				mes(.@result_str$);
+			}
+			else
+			{
+				mesclear();
+				mes("You don't have enough zeny!");
+				close();
+			}
+		
+		} while(select("Re-roll values again:Exit") == 1);
+		
+		mesclear();
+		mes("Okay, bye!");
+		close();
 	}
 }
