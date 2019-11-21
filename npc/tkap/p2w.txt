@@ -58,18 +58,27 @@ on_talk:
 	}
 	else
 	{
-		if(countitem(30000) > 0)
+		do
 		{
-			delitem(30000, 1);
-			getitem(.p2w_items[.@choice - 1], 1);
-			mes("There you go!");
-			close();
-		}
-		else
-		{
-			mes("You don't have enough P2W coins!");
-			close();
-		}
+			if(countitem(30000) > 0)
+			{
+				delitem(30000, 1);
+				getitem(.p2w_items[.@choice - 1], 1);
+				mesclear();
+				mes(.npc_name$);
+				mes("There you go!");
+			}
+			else
+			{
+				mes("You don't have enough P2W coins!");
+				close();
+			}
+		} while(select("Give me antoher one!:Exit") == 1);
+		
+		mesclear();
+		mes(.npc_name$);
+		mes("Okay, bye!");
+		close();
 	}
 	
 	
