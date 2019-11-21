@@ -175,7 +175,6 @@ on_talk:
 		// Select the part.
 		.@equip_index = select(.@menu$);
 		
-		
 		// Check if it's worn.
 		if (!getequipisequiped(.@equip_index)) {
 			mes("Brah, your item ain't equipped.");
