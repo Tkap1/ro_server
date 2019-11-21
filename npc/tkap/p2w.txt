@@ -45,8 +45,6 @@ on_talk:
 
 
 	disable_items();
-	dispbottom .npc_name$;
-	dispbottom .menu$;
 	
 	mes(.npc_name$);
 	mes("I can give you an item for 1 P2W coin");
