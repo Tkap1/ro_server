@@ -26,9 +26,9 @@ dali02,136,79,3	script	Captain#air1	4_M_DST_MASTER,{
 	close;
 }
 
-// Tkap: TODO: -1 in rathena means 0 in hercules
-// 				0 in rathena means 1 in hercules
-//				2 in rathena means 2 in hercules
+// Tkap:	-1 in rathena means 0 in hercules
+// 			0 in rathena means 1 in hercules
+//			2 in rathena means 2 in hercules
 
 dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
 	//HERCULES
@@ -92,6 +92,7 @@ dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
                        	setarray .@maps$[0], "1@air1", "1@air2";
 						for( set .@i, 0; .@i < getarraysize(.@maps$); set .@i,.@i+1 )
 						{
+							dispbottom "loop " + .@i; 
 							if( instance_attachmap( .@maps$[.@i],.@instance ) == "" ){
 								setmapflag .@maps$[.@i],mf_zone,"Memorial Dungeon";
 								npctalk "Airship Assault reservation failed due to map attach failure.";
@@ -102,7 +103,10 @@ dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
 						}
 						
 						instance_set_timeout 7200,300,instance_id();
-						instance_init(instance_id());
+						// instance_init(instance_id());
+						instance_init(.@instance); // Tkap:
+						dispbottom .@instance;
+						dispbottom instance_id();
             
 						disablenpc instance_npcname("warp1#air1", instance_id());
 						disablenpc instance_npcname("warp2a#air1", instance_id());

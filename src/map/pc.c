@@ -4336,7 +4336,7 @@ static int pc_modifybuyvalue(struct map_session_data *sd, int orig_value)
 {
 	int skill_lv, rate1 = 0, rate2 = 0;
 	// if ((skill_lv=pc->checkskill(sd,MC_DISCOUNT)) > 0)   // merchant discount
-	if ((skill_lv=10) > 0)   // merchant discount
+	if ((skill_lv=10) > 0)   // merchant discount Tkap: Everyone has Discount
 		rate1 = 5+skill_lv*2-((skill_lv==10)? 1:0);
 	// if ((skill_lv=pc->checkskill(sd,RG_COMPULSION)) > 0) // rogue discount
 	// 	rate2 = 5+skill_lv*4;
@@ -10127,19 +10127,12 @@ static int pc_equipitem(struct map_session_data *sd, int n, int req_pos)
 
 	if(battle_config.battle_log)
 		ShowInfo("equip %d(%d) %x:%x\n", sd->status.inventory[n].nameid, n, (unsigned int)(id ? id->equip : 0), (unsigned int)req_pos);
-	// if(!pc->isequip(sd,n) || !(pos&req_pos) || sd->status.inventory[n].equip != 0 || (sd->status.inventory[n].attribute & ATTR_BROKEN) != 0 ) { // [Valaris]
-	// 	// FIXME: pc->isequip: equip level failure uses 2 instead of 0
-	// 	clif->equipitemack(sd,n,0,EIA_FAIL); // fail
-	// 	return 0;
-	// }
-	
-	// Tkap: Removed "!(pos&req_pos)" check because it does not allow "setequipioption" to re-equip the item, needs further investigation...
 	if(!pc->isequip(sd,n) || !(pos&req_pos) || sd->status.inventory[n].equip != 0 || (sd->status.inventory[n].attribute & ATTR_BROKEN) != 0 ) { // [Valaris]
 		// FIXME: pc->isequip: equip level failure uses 2 instead of 0
 		clif->equipitemack(sd,n,0,EIA_FAIL); // fail
 		return 0;
 	}
-
+	
 	if (sd->sc.data[SC_BERSERK] || sd->sc.data[SC_NO_SWITCH_EQUIP])
 	{
 		clif->equipitemack(sd,n,0,EIA_FAIL); // fail
