@@ -25,11 +25,19 @@ dali02,136,79,3	script	Captain#air1	4_M_DST_MASTER,{
 	mes "Please help us...";
 	close;
 }
+
+// Tkap: TODO: -1 in rathena means 0 in hercules
+// 				0 in rathena means 1 in hercules
+//				2 in rathena means 2 in hercules
+
 dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
 	//HERCULES
 	set .@airassault_time,questprogress(15050,PLAYTIME); //23 hours
-	//RATHENA
-	//set .@airassault_time,checkquest(15050,PLAYTIME); //23 hours
+	
+	// Tkap: transform quest data to rathena
+	if(.@airassault_time == 0) {.@airassault_time = -1; };
+	else if(.@airassault_time == 1) {.@airassault_time = 0; }
+	
 	if (.@airassault_time == 2) {
 		erasequest 15050;
 		erasequest 15051;
@@ -43,8 +51,11 @@ dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
 	else if ((.@airassault_time >= 0) || (.@airassault_time == -1)) {
 		//HERCULES
 		set .@airreturn,questprogress(15051,PLAYTIME); //5 Minutes Re-Enter
-		//RATHENA
-		//set .@airreturn,checkquest(15051,PLAYTIME); //5 Minutes Re-Enter
+		
+		// Tkap: transform quest data to rathena
+		if(.@airreturn == 0) {.@airreturn = -1; };
+		else if(.@airreturn == 1) {.@airreturn = 0; }
+		
 		if(.@airreturn >= 1)
 		{
 			mes "^ff0000You took too long to come back sorry...^000000";
