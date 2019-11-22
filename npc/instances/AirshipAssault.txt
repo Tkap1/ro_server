@@ -108,7 +108,7 @@ dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
 					}
 				case 2:
 					getmapxy(.@map$, .@x, .@y, UNITTYPE_PC);
-					save .@map$, .@x, .@y;
+					savepoint .@map$, .@x, .@y;
 					mes "^ff0000Dimensionnal Portal activated^000000";
 					next;
 					mes "^ff0000Fulfills the mission without delay.^000000";
