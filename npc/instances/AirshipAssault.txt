@@ -35,7 +35,7 @@ dali02,142,81,3	script	Dimensionnal Portal#sara::dpsa	PORTAL,{
 	set .@airassault_time,questprogress(15050,PLAYTIME); //23 hours
 	
 	// Tkap: transform quest data to rathena
-	if(.@airassault_time == 0) {.@airassault_time = -1; };
+	if(.@airassault_time == 0) {.@airassault_time = -1; }
 	else if(.@airassault_time == 1) {.@airassault_time = 0; }
 	
 	if (.@airassault_time == 2) {
