@@ -42,4 +42,5 @@
 //3014,1179,0
 //3015,1272,0
 
-3383,1153,0
+3383,1153,0	// Instance orc zombie
+3384,1152,0 // Instance orc skeleton

@@ -1,7 +1,8 @@
 
-prontera,161,183,3	script	itest	PORTAL,{
+prontera,169,199,3	script	itest	PORTAL,{
 	
-	.@mob_id = 3383;
+	.@orc_zombie_id = 3383;
+	.@orc_skeleton_id = 3384;
 	// .@range = 10;
 	// .@map_name$ = getmapinfo(MAPINFO_NAME);
 	// getmapxy(.@map_name$, .@player_x, .@player_y, UNITTYPE_PC);
@@ -27,7 +28,7 @@ prontera,161,183,3	script	itest	PORTAL,{
 	instance_init(.@instance);
 
 	// warp .@instance_name$, 150, 150;
-	warpparty(.@instance_name$, 150, 150, getcharid(CHAR_ID_PARTY));
+	warpparty(.@instance_name$, 32, 169, getcharid(CHAR_ID_PARTY));
 	
 	// orcsdun01,32,172,0	warp	orc01-1	3,1,in_orcs01,30,180
 	// orcsdun01,183,8,0	warp	orc03	4,2,orcsdun02,21,185
@@ -36,5 +37,6 @@ prontera,161,183,3	script	itest	PORTAL,{
 	disablenpc instance_npcname("orc01-1", .@instance);
 	disablenpc instance_npcname("orc03", .@instance);
 	
-	monster(.@instance_name$, 0, 0, "aa", .@mob_id, 1000);
+	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_zombie_id, MOB_NAME), .@orc_zombie_id, 700);
+	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@orc_skeleton_id, 300);
 }
