@@ -15804,6 +15804,7 @@ static int skill_vfcastfix(struct block_list *bl, double time, uint16 skill_id, 
 		if (sc->data[SC_WATER_INSIGNIA] && sc->data[SC_WATER_INSIGNIA]->val1 == 3 && (skill->get_ele(skill_id, skill_lv) == ELE_WATER))
 			VARCAST_REDUCTION(30); //Reduces 30% Variable Cast Time of Water spells.
 		if (sc->data[SC_TELEKINESIS_INTENSE])
+			ShowWarning("OSO PUTA: %d", sc->data[SC_TELEKINESIS_INTENSE]->val2); // Tkap: Delete me
 			VARCAST_REDUCTION(sc->data[SC_TELEKINESIS_INTENSE]->val2);
 		if (sc->data[SC_SOULLINK]){
 			if(sc->data[SC_SOULLINK]->val2 == SL_WIZARD || sc->data[SC_SOULLINK]->val2 == SL_BARDDANCER)
