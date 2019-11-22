@@ -44,3 +44,4 @@
 
 3383,1153,0	// Instance orc zombie
 3384,1152,0 // Instance orc skeleton
+3385,1111,0 // Instance drainiliar

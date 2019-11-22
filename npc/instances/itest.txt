@@ -3,6 +3,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 	
 	.@orc_zombie_id = 3383;
 	.@orc_skeleton_id = 3384;
+	.@drainliar_id = 3385;
 	// .@range = 10;
 	// .@map_name$ = getmapinfo(MAPINFO_NAME);
 	// getmapxy(.@map_name$, .@player_x, .@player_y, UNITTYPE_PC);
@@ -39,4 +40,5 @@ prontera,169,199,3	script	itest	PORTAL,{
 	
 	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_zombie_id, MOB_NAME), .@orc_zombie_id, 700);
 	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@orc_skeleton_id, 300);
+	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@drainliar_id, 100);
 }
