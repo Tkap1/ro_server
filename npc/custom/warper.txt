@@ -425,7 +425,7 @@ G6: Go("schg_dun01",200,124);
 menu	"Bakonawa Lake",I1, "Bangungot Hospital 2F",I2, "Buwaya Cave",I3,
 		"Endless Tower",I4, "Hazy Forest",I5, "Malangdo Culvert",I6, "Nidhoggur's Nest",I7,
 		"Octopus Cave",I8, "Old Glast Heim",I9, "Orc's Memory",I10, "Sealed Shrine",I11,
-		"Wolfchev's Laboratory",I12;
+		"Wolfchev's Laboratory",I12,"Airship Assault", I13;
 
 I1: Restrict("RE");
 	Go("ma_scene01",172,175);
@@ -447,6 +447,8 @@ I10: Go("gef_fild10",240,198);
 I11: Go("monk_test",306,143);
 I12: Restrict("RE");
 	Go("lhz_dun04",148,269);
+I13: Restrict("RE");
+	Go("dali02",136,79);
 
 // --------------------------------------------------
 	Special:
