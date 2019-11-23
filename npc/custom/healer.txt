@@ -41,11 +41,11 @@
 		);
 	}
 	
-	if(player_kills >= .food_tiers[0])
+	if(player_kill_score >= .food_tiers[0])
 	{
 		for(.@i = getarraysize(.food_tiers) - 1; .@i >= 0; .@i--)
 		{
-			if(player_kills >= .food_tiers[.@i])
+			if(player_kill_score >= .food_tiers[.@i])
 			{
 				.@food_value = .@i + 1;
 				sc_start SC_FOOD_STR,1800000,.@food_value;
@@ -83,7 +83,7 @@
 	
 	if(.@food_value > 0)
 	{
-		dispbottom "Your kill score is: " + player_kills;
+		dispbottom "Your kill score is: " + player_kill_score;
 		dispbottom "You got " + .@food_value + " to all stats!";
 	}
 
