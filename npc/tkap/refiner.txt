@@ -27,118 +27,14 @@ on_talk:
 		}
 	}
 	
-	
 	// Select the part.
 	.@equip_index = select(.@menu$);
 	
-	
-	// Check if it's worn.
-	if (!getequipisequiped(.@equip_index)) {
-		mesclear();
-		mes(.npc_name$);
-		mes("Brah, your item ain't equipped.");
-		close();
-	} 
-	// Check if equipment is identified.
-	else if (!getequipisidentify(.@equip_index)) {
-		mesclear();
-		mes(.npc_name$);
-		mes("Brah, this equip ain't identified.");
-		close();
-	}
-	
-	//Check if the item is refinable...
-	if(!getequipisenableref(.@equip_index)) {
-		mesclear();
-		mes(.npc_name$);
-		mes "I don't think I can";
-		mes "refine this item at all...";
-		close;
-	}
-	
-	if(getequiprefinerycnt(.@equip_index) == 20)
-	{
-		mesclear();
-		mes(.npc_name$);
-		mes "I can't refine that";
-		mes "item anymore!";
-		close;
-	}
-	
-	
 	while(true)
 	{
-		
-		mesclear();
-		
 		.@refineitemid = getequipid(.@equip_index); // save id of the item
-		.@refinerycnt = getequiprefinerycnt(.@equip_index); //save refinery count
-		
-		if(.@refinerycnt < 10)
-		{
-			switch(getequipweaponlv(.@equip_index))
-			{
-				case 0: 	//Refine Armor
-					.@price = 2000;
-					.@material = 985;
-					.@safe = 4;
-					break;
-				case 1: 	//Refine Level 1 Weapon
-					.@price = 50;
-					.@material = 1010;
-					.@safe = 7;
-					break;
-				case 2: 	//Refine Level 2 Weapon
-					.@price = 200;
-					.@material = 1011;
-					.@safe = 6;
-					break;
-				case 3: 	//Refine Level 3 Weapon
-					.@price = 5000;
-					.@material = 984;
-					.@safe = 5;
-					break;
-				case 4: 	//Refine Level 4 Weapon
-					.@price = 20000;
-					.@material = 984;
-					.@safe = 4;
-					break;
-				case 5: 	//Refine other stuff?
-					.@price = 2000;
-					.@material = 985;
-					.@safe = 4;
-					break;
-			}
-		}
-		
-		else
-		{
-			if ((getequipweaponlv(.@equip_index) >= 1) && (getequipweaponlv(.@equip_index) <= 4))
-			{
-				.@material = 6224; //Bradium
-				.@price = 100000;
-			}
-			else
-			{
-				.@material = 6223; //Carnium
-				.@price = 100000;
-			}
-		}
-		
-		.@success_chance = getequippercentrefinery(.@equip_index);
-	
-		mes(.npc_name$);
-		mes("Zeny cost: " + "^0000ff" + .@price + "^000000");
-		mes("Item needed: " + "^0000ff" + getitemname(.@material) + "^000000");
-		mes("Chance of success: " + ((.@success_chance == 100) ? "^00ff00" + .@success_chance + "^000000" : "^ff0000" + .@success_chance + "^000000"));
-		
-		if(select("Upgrade:Exit") == 2)
-		{
-			mesclear();
-			mes(.npc_name$);
-			mes("Pussy");
-			close();
-		}
+		.@refine_count = getequiprefinerycnt(.@equip_index); //save refinery count
+		.@weapon_level = getequipweaponlv(.@equip_index);
 		
 		// Check if it's worn.
 		if (!getequipisequiped(.@equip_index)) {
@@ -154,7 +50,7 @@ on_talk:
 			mes("Brah, this equip ain't identified.");
 			close();
 		}
-		
+
 		//Check if the item is refinable...
 		if(!getequipisenableref(.@equip_index)) {
 			mesclear();
@@ -163,8 +59,8 @@ on_talk:
 			mes "refine this item at all...";
 			close;
 		}
-		
-		if(.@refinerycnt == 20)
+
+		if(.@refine_count == 20)
 		{
 			mesclear();
 			mes(.npc_name$);
@@ -173,6 +69,72 @@ on_talk:
 			close;
 		}
 		
+		if(.@refine_count < 10)
+		{
+			switch(.@weapon_level)
+			{
+				case 0: 	//Refine Armor
+					.@price = 2000;
+					.@material = 985;
+					break;
+				case 1: 	//Refine Level 1 Weapon
+					.@price = 50;
+					.@material = 1010;
+					break;
+				case 2: 	//Refine Level 2 Weapon
+					.@price = 200;
+					.@material = 1011;
+					break;
+				case 3: 	//Refine Level 3 Weapon
+					.@price = 5000;
+					.@material = 984;
+					break;
+				case 4: 	//Refine Level 4 Weapon
+					.@price = 20000;
+					.@material = 984;
+					break;
+				case 5: 	//Refine other stuff?
+					.@price = 2000;
+					.@material = 985;
+					break;
+			}
+		}
+		
+		else
+		{
+			if (.@weapon_level >= 1 && .@weapon_level <= 4)
+			{
+				.@material = 6224; //Bradium
+				.@price = 100000;
+			}
+			else
+			{
+				.@material = 6223; //Carnium
+				.@price = 100000;
+			}
+		}
+		
+		.@success_chance = getequippercentrefinery(.@equip_index);
+		.@material_count_on_safe_fail = (.@refine_count + 1) * (.@refine_count + 1) * (.@weapon_level == 0 ? 4 : .@weapon_level) + 1;
+	
+		mesclear();
+		mes(.npc_name$);
+		mes("Zeny cost: " + "^0000ff" + .@price + "^000000");
+		mes(sprintf("Items needed: ^ff0000%d^000000 ^0000ff%s^000000", 1, getitemname(.@material)));
+		mes(sprintf("Items needed on safe failure: ^ff0000%d^000000 ^0000ff%s^000000", .@material_count_on_safe_fail, getitemname(.@material)));
+		mes("Chance of success: " + ((.@success_chance == 100) ? "^00ff00" + .@success_chance + "^000000" : "^ff0000" + .@success_chance + "^000000"));
+		
+		.@refine_option = select("Upgrade:Safe Upgrade:Exit");
+		if(.@refine_option == 3)
+		{
+			mesclear();
+			mes(.npc_name$);
+			mes("Pussy");
+			close();
+		}
+		
+		.@temp_material_amount_needed = (.@refine_option == 1 ? 1 : .@material_count_on_safe_fail);
+		
 		// Check for materials
 		if(Zeny < .@price)
 		{
@@ -180,8 +142,9 @@ on_talk:
 			mes(.npc_name$);
 			mes("You dont have enough zeny!");
 			close();
-		} 
-		if(countitem(.@material) < 1)
+		}
+		
+		if(countitem(.@material) < .@temp_material_amount_needed)
 		{
 			mesclear();
 			mes(.npc_name$);
@@ -193,22 +156,31 @@ on_talk:
 		delitem(.@material, 1);
 		Zeny -= .@price;
 		
-		// Failure
 		if(rand(1,100) > .@success_chance)
 		{
-			failedrefitem(.@equip_index);
 			mesclear();
 			mes(.npc_name$);
 			mes("A BUM!");
-			mes("The item was destroyed!");
-			close();
+			mes("The refine attempt was a failure!");
+			if(.@refine_option == 1)
+			{
+				failedrefitem(.@equip_index);
+				close();
+			}
+			else
+			{
+				specialeffect(EF_REFINEFAIL, AREA, playerattached());
+				delitem(.@material, .@temp_material_amount_needed - 1);
+				mes(sprintf("But since you went for the safe option, I managed to save the item with the ^ff0000%d^000000 ^0000ff%s^000000 you gave me", .@temp_material_amount_needed, getitemname(.@material)));
+				next();
+			}
 		}
 		
-		// Success
 		else
 		{
 			successrefitem(.@equip_index);
 		}
+	
 	}
 	
 end;

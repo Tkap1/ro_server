@@ -81,7 +81,7 @@ OnInit:
 	.bloody_branch_divisor = 30;
 	
 end;
-	
+
 OnNPCKillEvent:
 	
 	
