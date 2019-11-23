@@ -13,6 +13,51 @@
 //============================================================
 
 -	script	Healer	FAKE_NPC,{
+	
+	if(!.init)
+	{
+		.init = 1;
+		setarray(.food_tiers[0],
+		10,					// +1
+		28,					// +2
+		78,					// +3
+		218,				// +4
+		610,				// +5
+		1708,				// +6
+		4782,				// +7
+		13389,				// +8
+		37489,				// +9
+		104969,				// +10
+		293913,				// +11
+		822956,				// +12
+		2304276,			// +13
+		6451972,			// +14
+		18065521,			// +15
+		50583458,			// +16
+		141633682,			// +17
+		396574309,			// +18
+		1110408065,			// +19
+		2147483647			// +20
+		);
+	}
+	
+	if(player_kills >= .food_tiers[0])
+	{
+		for(.@i = getarraysize(.food_tiers) - 1; .@i >= 0; .@i--)
+		{
+			if(player_kills >= .food_tiers[.@i])
+			{
+				.@food_value = .@i + 1;
+				sc_start SC_FOOD_STR,1800000,.@food_value;
+				sc_start SC_FOOD_AGI,1800000,.@food_value;
+				sc_start SC_FOOD_VIT,1800000,.@food_value;
+				sc_start SC_FOOD_INT,1800000,.@food_value;
+				sc_start SC_FOOD_DEX,1800000,.@food_value;
+				sc_start SC_FOOD_LUK,1800000,.@food_value;
+				break;
+			}
+		}
+	}
 
 	specialeffect(EF_HEAL2, AREA, playerattached()); percentheal 100,100;
 	specialeffect(EF_INCAGILITY, AREA, playerattached()); sc_start SC_INC_AGI,1800000,10;
@@ -35,6 +80,12 @@
 	if (BaseJob == Job_Soul_Linker) .@spirit = 461;
 
 	if (.@spirit) sc_start4 SC_SOULLINK, 1800000, 5, .@spirit,0,0;
+	
+	if(.@food_value > 0)
+	{
+		dispbottom "Your kill score is: " + player_kills;
+		dispbottom "You got " + .@food_value + " to all stats!";
+	}
 
 	end;
 }
