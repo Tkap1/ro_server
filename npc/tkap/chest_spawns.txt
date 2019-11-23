@@ -78,7 +78,7 @@ OnInit:
 	.chest_chance_multiplier = 5;
 	.p2w_chance_multiplier = 1;
 	.mora_coin_multiplier = 1;
-	.bloody_branch_divisor = 10;
+	.bloody_branch_divisor = 30;
 	
 end;
 	
