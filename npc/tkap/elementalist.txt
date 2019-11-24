@@ -4,7 +4,7 @@
 // Tested : Latest Version Rathena
 // Description: This script allows all characters changed element weapon.Only one element is allowed.More than one element automatically buff reset.
 
-prontera,158,188,3	script	Elementalist	834,{
+prontera,158,188,3	script	Elementalist	4_M_BUDDHIST,{
 	callsub(on_talk);
 	end;
 	
