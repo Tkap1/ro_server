@@ -1,48 +1,87 @@
 
 prontera,169,199,3	script	itest	PORTAL,{
 	
-	.@orc_zombie_id = 3383;
-	.@orc_skeleton_id = 3384;
-	.@drainliar_id = 3385;
+	
+	
+	// Al hablar, menu
+	// si eres party leader, menu es entrar - generar - salir
+	// si le das a entrar, y no esta generada, puta.
+	// si le generar, genera
+	
 	// .@range = 10;
 	// .@map_name$ = getmapinfo(MAPINFO_NAME);
 	// getmapxy(.@map_name$, .@player_x, .@player_y, UNITTYPE_PC);
 	// areamonster("this", (.@player_x - .@range), (.@player_y + .@range), (.@player_x + .@range), (.@player_y - .@range), getmonsterinfo(.@mob_id, MOB_NAME), .@mob_id, 1);
 	
-	set .@instance, instance_create("Payon instanced", getcharid(1));
-	if( .@instance < 0 )
-	{
-		mes "Failed to create the instance!";
-		close;
-	}
+	.@orc_zombie_id = 3383;
+	.@orc_skeleton_id = 3384;
+	.@drainliar_id = 3385;
 	.@map_name$ = "orcsdun01";
 	.@instance_name$ = "1@orcsdun01";
-	if( instance_attachmap(.@map_name$, .@instance, false, .@instance_name$) == "" )
-	// *instance_attachmap("<map name>", <instance id>{, <use base name>{, "<new map name>"}})
+	
+	if(.instance_created)
 	{
-		instance_destroy(.@instance);
-		mes "Failed to attach payon as a map!";
-		close;
+		.@choice = select("Join Instance:Destroy Instance:Cancel");
+		if(.@choice == 1)
+		{
+			warp .@instance_name$, 32, 169;
+		}
+		if(.@choice == 2)
+		{
+			.instance_created = false;
+			close();
+		}
+		if(.@choice == 3)
+		{
+			close();
+		}
 	}
-	instance_attach(.@instance);
-	instance_set_timeout(3600, 300, .@instance);
-	instance_init(.@instance);
+	else
+	{
+		.@choice = select("Generate Instance:Cancel");
+		if(.@choice == 1)
+		{
+			set .@instance, instance_create("Payon instanced", getcharid(1));
+			if( .@instance < 0 )
+			{
+				mes "Failed to create the instance!";
+				close;
+			}
+			if( instance_attachmap(.@map_name$, .@instance, false, .@instance_name$) == "" )
+			// *instance_attachmap("<map name>", <instance id>{, <use base name>{, "<new map name>"}})
+			{
+				instance_destroy(.@instance);
+				mes "Failed to attach payon as a map!";
+				close;
+			}
+			instance_attach(.@instance);
+			instance_set_timeout(3600, 300, .@instance);
+			instance_init(.@instance);
+			.instance_created = true;
 
-	// warp .@instance_name$, 150, 150;
-	warpparty(.@instance_name$, 32, 169, getcharid(CHAR_ID_PARTY));
-	
-	// orcsdun01,32,172,0	warp	orc01-1	3,1,in_orcs01,30,180
-	// orcsdun01,183,8,0	warp	orc03	4,2,orcsdun02,21,185
-	// disablenpc instance_npcname("warp#orc01-1", .@instance);
-	// disablenpc instance_npcname("warp", .@instance);
-	disablenpc instance_npcname("orc01-1", .@instance);
-	disablenpc instance_npcname("orc03", .@instance);
-	
-	.total_mobs = 1100;
-	.spawned_mvps = 0;
-	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_zombie_id, MOB_NAME), .@orc_zombie_id, 700, "itest::On_itest_kill");
-	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@orc_skeleton_id, 300, "itest::On_itest_kill");
-	monster(.@instance_name$, 0, 0, getmonsterinfo(.@drainliar_id, MOB_NAME), .@drainliar_id, 100, "itest::On_itest_kill");
+			// warp .@instance_name$, 32, 169;
+			// warpparty(.@instance_name$, 32, 169, getcharid(CHAR_ID_PARTY));
+			
+			// orcsdun01,32,172,0	warp	orc01-1	3,1,in_orcs01,30,180
+			// orcsdun01,183,8,0	warp	orc03	4,2,orcsdun02,21,185
+			// disablenpc instance_npcname("warp#orc01-1", .@instance);
+			// disablenpc instance_npcname("warp", .@instance);
+			disablenpc instance_npcname("orc01-1", .@instance);
+			disablenpc instance_npcname("orc03", .@instance);
+			
+			.total_mobs = 1100;
+			.spawned_mvps = 0;
+			monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_zombie_id, MOB_NAME), .@orc_zombie_id, 700, "itest::On_itest_kill");
+			monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@orc_skeleton_id, 300, "itest::On_itest_kill");
+			monster(.@instance_name$, 0, 0, getmonsterinfo(.@drainliar_id, MOB_NAME), .@drainliar_id, 100, "itest::On_itest_kill");
+			
+			close();
+		}
+		if(.@choice == 2)
+		{
+			close();
+		}
+	}
 	
 	end;
 	
