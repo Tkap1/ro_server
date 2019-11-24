@@ -38,7 +38,17 @@ prontera,169,199,3	script	itest	PORTAL,{
 	disablenpc instance_npcname("orc01-1", .@instance);
 	disablenpc instance_npcname("orc03", .@instance);
 	
-	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_zombie_id, MOB_NAME), .@orc_zombie_id, 700);
-	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@orc_skeleton_id, 300);
-	monster(.@instance_name$, 0, 0, getmonsterinfo(.@drainliar_id, MOB_NAME), .@drainliar_id, 100);
+	.total_mobs = 1100;
+	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_zombie_id, MOB_NAME), .@orc_zombie_id, 700, "itest::On_itest_kill");
+	monster(.@instance_name$, 0, 0, getmonsterinfo(.@orc_skeleton_id, MOB_NAME), .@orc_skeleton_id, 300, "itest::On_itest_kill");
+	monster(.@instance_name$, 0, 0, getmonsterinfo(.@drainliar_id, MOB_NAME), .@drainliar_id, 100, "itest::On_itest_kill");
+	
+	end;
+	
+	On_itest_kill:
+		
+		.total_mobs -= 1;
+		announce(sprintf("%d %s remanining", .total_mobs, (.total_mobs == 1 ? "monsters" : "monster")), bc_blue);
+		
+	end
 }
