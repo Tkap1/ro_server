@@ -54,12 +54,12 @@ prontera,169,199,3	script	itest	PORTAL,{
 			if(.total_mobs < 201 && .total_mobs > 0)
 			{
 				.@mobs_left_until_mvp_spawn = .total_mobs - 50;
-				announce(sprintf("%d %s remanining until MVP spawns", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monsters" : "monster")), bc_blue);
+				announce(sprintf("%d %s remanining until MVP spawns", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monsters" : "monster")), bc_blue|bc_map);
 			}
 			if(.total_mobs < 51)
 			{
 				.spawned_mvps = 1;
-				announce("3 MVPs have been spawned!", bc_blue);
+				announce("3 MVPs have been spawned!", bc_blue|bc_map);
 				monster("this",0, 0,"--ja--",-3,1);
 				monster("this",0, 0,"--ja--",-3,1);
 				monster("this",0, 0,"--ja--",-3,1);
