@@ -437,68 +437,68 @@ OnEnable:
 	initnpctimer();
 	end;
 
-OnTimer1500:
+OnTimer1000:
 	npctalk(_("Who are you?"), instance_npcname("Heinrich#ghinstance2"));
 	end;
 
-OnTimer4500:
+OnTimer2000:
 	npctalk(_("Well well~ Am I interrupting you? Weren't you expecting me?"), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer10000:
+OnTimer3000:
 	npctalk(_("Himelmez!! Already!"), instance_npcname("Varmundt#ghinstance2"));
 	end;
 
-OnTimer17500:
+OnTimer4000:
 	npctalk(_("My name is Lisa Kahn Himelmez. Master of Dullahan, Dead man's Valkyrie, that's what they call me."), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer22000:
+OnTimer5000:
 	npctalk(_("Aren't you a little too feminine to be the Ruler of death? We are not afraid of you..."), instance_npcname("Heinrich#ghinstance2"));
 	end;
 
-OnTimer28500:
+OnTimer6000:
 	npctalk(_("Let's see if you can relax like that after you find out where your king is."), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer36000:
+OnTimer7000:
 	npctalk(_("What?"), instance_npcname("Heinrich#ghinstance2"));
 	end;
 
-OnTimer41000:
+OnTimer8000:
 	npctalk(_("Hmm, now I have your attention do I not?"), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer54000:
+OnTimer9000:
 	npctalk(_("It's a pity to meet you in a situation like this."), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer59000:
+OnTimer10000:
 	npctalk(_("My king is visiting the Rune-Midgarts royal family. He's not back yet."), instance_npcname("Heinrich#ghinstance2"));
 	end;
 
-OnTimer66500:
+OnTimer11000:
 	npctalk(_("And now you are trying to trick me, what has happened to him?!"), instance_npcname("Heinrich#ghinstance2"));
 	end;
 
-OnTimer71500:
+OnTimer12000:
 	npctalk(_("Well~ I would love to sit down and explain for you, but I'm kind of busy today~"), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer78000:
+OnTimer13000:
 	npctalk(_("I have business to take care of. My minions will treat you well enough for me~"), instance_npcname("Himelmez#ghinstance1"));
 	end;
 
-OnTimer84500:
+OnTimer14000:
 	npctalk(_("She probably already knows where the Ymir's heart piece is."), instance_npcname("Heinrich#ghinstance2"));
 	donpcevent(instance_npcname("Himelmez#ghinstance1")+"::OnDisable");
 	end;
 
-OnTimer90500:
+OnTimer15000:
 	npctalk(_("All Khalitzburg and White Knights should follow me now..."), instance_npcname("Heinrich#ghinstance2"));
 	end;
 
-OnTimer92000:
+OnTimer16000:
 	for (.@i = 1; .@i <= 20; .@i += 4) {
 		hideonnpc(instance_npcname("Khalitzburg Knight#"+.@i));
 		hideonnpc(instance_npcname("Khalitzburg Knight#"+(.@i+1)));
