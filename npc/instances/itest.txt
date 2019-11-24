@@ -46,6 +46,8 @@ prontera,169,199,3	script	itest	PORTAL,{
 	end;
 	
 	On_itest_kill:
+	
+		callsub(OnNPCKillEvent);
 		
 		.total_mobs -= 1;
 		announce(sprintf("%d %s remanining", .total_mobs, (.total_mobs == 1 ? "monsters" : "monster")), bc_blue);
