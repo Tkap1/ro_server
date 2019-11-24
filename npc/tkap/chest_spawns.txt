@@ -1,92 +1,4 @@
 
-function	script	process_mob_death	{
-	
-	// .@mob_hp = getmonsterinfo(killedrid, MOB_MAXHP);
-	.@mob_hp = getmonsterinfo(getarg(0), MOB_MAXHP);
-	
-	dispbottom .@mob_hp;
-	
-	// Get the party members
-	getpartymember(getcharid(CHAR_ID_PARTY), 0);
-	copyarray(@names$[0], $@partymembername$[0], $@partymembercount);
-	
-	if($@partymembercount == 0)
-	{
-		player_kill_score = max(player_kill_score, player_kill_score + .@mob_hp / 10000);
-	}
-	
-	else
-	{
-		getpartymember(getcharid(CHAR_ID_PARTY), 1);
-		copyarray(@char_ids[0], $@partymembercid[0], $@partymembercount);
-		getpartymember(getcharid(CHAR_ID_PARTY), 2);
-		copyarray(@account_ids[0], $@partymemberaid[0], $@partymembercount);
-		
-		@count = $@partymembercount;
-		@killer_map$ = strcharinfo(PC_MAP);
-		
-		// For each party member, if they are online and in the same map add to their "player_kill_score"
-		for(.@i = 0; .@i < @count; .@i++)
-		{
-			if(isloggedin(@account_ids[.@i], @char_ids[.@i]))
-			{
-				@party_member_map$ = strcharinfo(PC_MAP, "a", @account_ids[.@i]);
-				if(@killer_map$ == @party_member_map$)
-				{
-					@value_before = getvariableofpc(player_kill_score, @account_ids[.@i]);
-					@new_value = max(@value_before, @value_before + .@mob_hp / 10000);
-					set(getvariableofpc(player_kill_score, @account_ids[.@i]), @new_value);
-				}
-			}
-		}
-	}
-	
-	
-	// Chest spawn roll
-	.@temp_chance = .@mob_hp * .chest_chance_multiplier;
-	// .@temp_chance = .chance;	// Always spawns a chest, testing only
-	if(rand(1, .chance) <= .@temp_chance)
-	{
-		.@mob_to_spawn_id = .ids[rand(0, getarraysize(.ids) - 1)];
-		.@mob_to_spawn_name$ = getmonsterinfo(.@mob_to_spawn_id, MOB_NAME);
-		monster("this", -1, -1, .@mob_to_spawn_name$, .@mob_to_spawn_id, 1);
-		specialeffect(EF_COIN, AREA, playerattached());
-	}
-	
-	// Materials roll
-	for(.@i = 0; .@i < getarraysize(.materials); .@i++)
-	{
-		.@temp_chance = .@mob_hp * .materials_chance_multiplier[.@i];
-		if(rand(1, .chance) <= .@temp_chance)
-		{
-			getitem(.materials[.@i], 1);
-			// announce(strcharinfo(PC_NAME)+" just got " + getitemname(.materials[.@i]), bc_blue|bc_all);
-		}
-	}
-	
-	// P2W coins roll
-	.@temp_chance = .@mob_hp * .p2w_chance_multiplier;
-	if(rand(1, .chance) <= .@temp_chance)
-	{
-		getitem(30000, 1);
-	}
-	
-	// Akuma's mora coins xq llora
-	.@temp_chance = .@mob_hp * .mora_coin_multiplier;
-	if(rand(1, .chance) <= .@temp_chance)
-	{
-		getitem(6380, 1);
-	}
-	
-	// Oso bloody branches xq llora
-	.@temp_chance = .@mob_hp / .bloody_branch_divisor;
-	if(rand(1, .chance) <= .@temp_chance)
-	{
-		getitem(12103, 1);
-		announce("Hey, "+strcharinfo(PC_NAME)+" just got a Bloody Branch!", bc_blue|bc_all);
-	}
-	return;
-}
 
 -	script	chest_spawns	FAKE_NPC,1,1,{
 	
@@ -172,7 +84,88 @@ end;
 
 OnNPCKillEvent:
 	
-	callfunc("process_mob_death", killedrid);
+	
+	.@mob_hp = getmonsterinfo(killedrid, MOB_MAXHP);
+	
+	// Get the party members
+	getpartymember(getcharid(CHAR_ID_PARTY), 0);
+	copyarray(@names$[0], $@partymembername$[0], $@partymembercount);
+	
+	if($@partymembercount == 0)
+	{
+		player_kill_score = max(player_kill_score, player_kill_score + .@mob_hp / 10000);
+	}
+	
+	else
+	{
+		getpartymember(getcharid(CHAR_ID_PARTY), 1);
+		copyarray(@char_ids[0], $@partymembercid[0], $@partymembercount);
+		getpartymember(getcharid(CHAR_ID_PARTY), 2);
+		copyarray(@account_ids[0], $@partymemberaid[0], $@partymembercount);
+		
+		@count = $@partymembercount;
+		@killer_map$ = strcharinfo(PC_MAP);
+		
+		// For each party member, if they are online and in the same map add to their "player_kill_score"
+		for(.@i = 0; .@i < @count; .@i++)
+		{
+			if(isloggedin(@account_ids[.@i], @char_ids[.@i]))
+			{
+				@party_member_map$ = strcharinfo(PC_MAP, "a", @account_ids[.@i]);
+				if(@killer_map$ == @party_member_map$)
+				{
+					@value_before = getvariableofpc(player_kill_score, @account_ids[.@i]);
+					@new_value = max(@value_before, @value_before + .@mob_hp / 10000);
+					set(getvariableofpc(player_kill_score, @account_ids[.@i]), @new_value);
+				}
+			}
+		}
+	}
+	
+	
+	// Chest spawn roll
+	.@temp_chance = .@mob_hp * .chest_chance_multiplier;
+	// .@temp_chance = .chance;	// Always spawns a chest, testing only
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		.@mob_to_spawn_id = .ids[rand(0, getarraysize(.ids) - 1)];
+		.@mob_to_spawn_name$ = getmonsterinfo(.@mob_to_spawn_id, MOB_NAME);
+		monster("this", -1, -1, .@mob_to_spawn_name$, .@mob_to_spawn_id, 1);
+		specialeffect(EF_COIN, AREA, playerattached());
+	}
+	
+	// Materials roll
+	for(.@i = 0; .@i < getarraysize(.materials); .@i++)
+	{
+		.@temp_chance = .@mob_hp * .materials_chance_multiplier[.@i];
+		if(rand(1, .chance) <= .@temp_chance)
+		{
+			getitem(.materials[.@i], 1);
+			// announce(strcharinfo(PC_NAME)+" just got " + getitemname(.materials[.@i]), bc_blue|bc_all);
+		}
+	}
+	
+	// P2W coins roll
+	.@temp_chance = .@mob_hp * .p2w_chance_multiplier;
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		getitem(30000, 1);
+	}
+	
+	// Akuma's mora coins xq llora
+	.@temp_chance = .@mob_hp * .mora_coin_multiplier;
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		getitem(6380, 1);
+	}
+	
+	// Oso bloody branches xq llora
+	.@temp_chance = .@mob_hp / .bloody_branch_divisor;
+	if(rand(1, .chance) <= .@temp_chance)
+	{
+		getitem(12103, 1);
+		announce("Hey, "+strcharinfo(PC_NAME)+" just got a Bloody Branch!", bc_blue|bc_all);
+	}
 	
 end;
 
