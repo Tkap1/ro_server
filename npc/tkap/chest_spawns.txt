@@ -228,8 +228,7 @@ OnNPCKillEvent:
 	
 	// Oso bloody branches xq llora
 	.@temp_chance = .@mob_hp / .bloody_branch_divisor;
-	// if(rand(1, .chance) <= .@temp_chance)
-	if(1)
+	if(rand(1, .chance) <= .@temp_chance)
 	{
 		if(@is_on_party)
 		{
