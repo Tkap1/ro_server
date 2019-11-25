@@ -461,6 +461,7 @@ OnInit:
 	sellitem Leaf_Of_Yggdrasil;
 	sellitem Center_Potion;
 	sellitem Awakening_Potion;
+	sellitem Berserk_Potion;
 	sellitem Wing_Of_Fly;
 	sellitem Wing_Of_Butterfly;
 	sellitem Booby_Trap;
