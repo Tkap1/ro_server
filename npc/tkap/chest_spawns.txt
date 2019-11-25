@@ -127,7 +127,6 @@ OnNPCKillEvent:
 	
 	// Chest spawn roll
 	.@temp_chance = .@mob_hp * .chest_chance_multiplier;
-	// .@temp_chance = .chance;	// Always spawns a chest, testing only
 	if(rand(1, .chance) <= .@temp_chance)
 	{
 		.@mob_to_spawn_id = .ids[rand(0, getarraysize(.ids) - 1)];
