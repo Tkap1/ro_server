@@ -95,7 +95,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 			if(.total_mobs < 201 && .total_mobs > 0)
 			{
 				.@mobs_left_until_mvp_spawn = .total_mobs - 50;
-				announce(sprintf("%d %s remanining until MVP spawns", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monsters" : "monster")), bc_blue|bc_map);
+				announce(sprintf("%d %s remanining until MVP spawns", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monster" : "monsters")), bc_blue|bc_map);
 			}
 			if(.total_mobs < 51)
 			{
