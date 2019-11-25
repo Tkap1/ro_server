@@ -462,6 +462,7 @@ OnInit:
 	sellitem Center_Potion;
 	sellitem Awakening_Potion;
 	sellitem Berserk_Potion;
+	sellitem Convex_Mirror;
 	sellitem Wing_Of_Fly;
 	sellitem Wing_Of_Butterfly;
 	sellitem Booby_Trap;
