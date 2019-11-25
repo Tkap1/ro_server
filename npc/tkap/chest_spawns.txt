@@ -262,6 +262,7 @@ end;
 
 OnPCDieEvent:
 	player_kill_score = 0;
+	player_died = true;
 end;
 	
 }
