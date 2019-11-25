@@ -62,6 +62,7 @@
 	specialeffect(EF_HEAL2, AREA, playerattached()); percentheal 100,100;
 	specialeffect(EF_INCAGILITY, AREA, playerattached()); sc_start SC_INC_AGI,1800000,10;
 	specialeffect(EF_BLESSING, AREA, playerattached()); sc_start SC_BLESSING,1800000,10;
+	sc_start SC_CASH_BOSS_ALARM,600000,0;
 	.@spirit = 0;
 	if (BaseJob == Job_Alchemist) .@spirit = 445; 
 	if (BaseJob == Job_Monk) .@spirit = 447;
