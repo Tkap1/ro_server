@@ -958,6 +958,12 @@ static int mob_setdelayspawn(struct mob_data *md)
 
 	if (spawntime < 5000) //Monsters should never respawn faster than within 5 seconds
 		spawntime = 5000;
+		
+	// Tkap: Try to make the max respawn time 10 minutes
+	if(spawntime > 600000)
+	{
+		spawntime = 600000;
+	}
 
 	if( md->spawn_timer != INVALID_TIMER )
 		timer->delete(md->spawn_timer, mob->delayspawn);
