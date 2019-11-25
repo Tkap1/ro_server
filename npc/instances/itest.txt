@@ -114,7 +114,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 		.mvps_killed += 1;
 		if(.mvps_killed == 3)
 		{
-			
+			announce("All MVPs have been killed!", bc_blue|bc_map);
 			getpartymember(getcharid(CHAR_ID_PARTY), 0);
 			copyarray(@names$[0], $@partymembername$[0], $@partymembercount);
 			
