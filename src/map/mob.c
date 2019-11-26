@@ -2821,7 +2821,6 @@ static int mob_dead(struct mob_data *md, struct block_list *src, int type)
 					pc->setparam(sd, SP_KILLEDRID, md->class_);
 					pc->setparam(sd, SP_KILLERRID, sd->bl.id);
 					pc->setparam(sd, SP_KILLEDGID, md->bl.id);
-					ShowWarning("a: %d\n", md->db->mob_id);
 					npc->event(sd,md->npc_event,0);
 					if (script->config.kill_mob_event_type)
 						npc->script_event(mvp_sd, NPCE_KILLNPC);
@@ -2829,17 +2828,14 @@ static int mob_dead(struct mob_data *md, struct block_list *src, int type)
 					pc->setparam(mvp_sd, SP_KILLEDRID, md->class_);
 					pc->setparam(mvp_sd, SP_KILLERRID, sd?sd->bl.id:0);
 					pc->setparam(mvp_sd, SP_KILLEDGID, md->bl.id);
-					ShowWarning("b: %d\n", md->db->mob_id);
 					npc->event(mvp_sd,md->npc_event,0);
 					if (script->config.kill_mob_event_type)
 						npc->script_event(mvp_sd, NPCE_KILLNPC);
 				} else
 					npc->event_do(md->npc_event);
-					ShowWarning("c: %d\n", md->db->mob_id);
 			} else if (mvp_sd) {
 				pc->setparam(mvp_sd, SP_KILLEDRID, md->class_);
 				pc->setparam(mvp_sd, SP_KILLEDGID, md->bl.id);
-				ShowWarning("d: %d\n", md->bl.id);
 				npc->script_event(mvp_sd, NPCE_KILLNPC); // PCKillNPC [Lance]
 			}
 		
