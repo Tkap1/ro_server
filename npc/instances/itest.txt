@@ -1,8 +1,8 @@
 
 prontera,169,199,3	script	itest	PORTAL,{
 	
-	.@foo = monster("this", -1, -1, __ja__, 1002, 1);
-	setunitdata(.@foo, UDT_BASE_EXP, 200);
+	// .@foo = monster("this", -1, -1, __ja__, 1002, 1);
+	// setunitdata(.@foo, UDT_BASE_EXP, 200);
 	callsub(on_talk);
 	end;
 	
