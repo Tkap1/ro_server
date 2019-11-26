@@ -19358,6 +19358,12 @@ static BUILDIN(setunitdata)
 
 		switch (type)
 		{
+		case UDT_BASE_EXP:
+			md->db->base_exp = val;
+			break;
+		case UDT_JOB_EXP:
+			md->db->job_exp = val;
+			break;
 		case UDT_SIZE:
 			md->status.size = (unsigned char) val;
 			break;
@@ -20313,6 +20319,10 @@ static BUILDIN(getunitdata)
 
 		switch (type)
 		{
+			// Tkap:
+		case UDT_BASE_EXP:        script_pushint(st, md->db->base_exp); break;
+		case UDT_JOB_EXP:        script_pushint(st, md->db->job_exp); break;
+		
 		case UDT_TYPE:        script_pushint(st, BL_MOB); break;
 		case UDT_SIZE:        script_pushint(st, md->status.size); break;
 		case UDT_LEVEL:       script_pushint(st, md->level); break;
@@ -27201,6 +27211,8 @@ static void script_hardcoded_constants(void)
 	script->set_constant("UDT_BODY2", UDT_BODY2, false, false);
 	script->set_constant("UDT_GROUP", UDT_GROUP, false, false);
 	script->set_constant("UDT_DAMAGE_TAKEN_RATE", UDT_DAMAGE_TAKEN_RATE, false, false);
+	script->set_constant("UDT_BASE_EXP", UDT_BASE_EXP, false, false);
+	script->set_constant("UDT_JOB_EXP", UDT_JOB_EXP, false, false);
 
 	script->constdb_comment("getguildonline types");
 	script->set_constant("GUILD_ONLINE_ALL", GUILD_ONLINE_ALL, false, false);

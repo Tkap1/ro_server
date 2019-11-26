@@ -99,6 +99,12 @@ prontera,169,199,3	script	itest	PORTAL,{
 							
 							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
 							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 83 / 100);
+							
+							.@baseexp_before = getunitdata(.@units[.@i], UDT_BASE_EXP);
+							setunitdata(.@units[.@i], UDT_BASE_EXP, .@baseexp_before * 160 / 100);
+							
+							.@jobexp_before = getunitdata(.@units[.@i], UDT_JOB_EXP);
+							setunitdata(.@units[.@i], UDT_JOB_EXP, .@jobexp_before * 160 / 100);
 						}
 						freeloop(false);
 					}
@@ -124,6 +130,12 @@ prontera,169,199,3	script	itest	PORTAL,{
 							
 							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
 							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 66 / 100);
+							
+							.@baseexp_before = getunitdata(.@units[.@i], UDT_BASE_EXP);
+							setunitdata(.@units[.@i], UDT_BASE_EXP, .@baseexp_before * 190 / 100);
+							
+							.@jobexp_before = getunitdata(.@units[.@i], UDT_JOB_EXP);
+							setunitdata(.@units[.@i], UDT_JOB_EXP, .@jobexp_before * 190 / 100);
 						}
 						freeloop(false);
 					}
