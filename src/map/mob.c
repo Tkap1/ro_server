@@ -2460,11 +2460,13 @@ static int mob_dead(struct mob_data *md, struct block_list *src, int type)
 			base_exp = 0;
 		else
 			base_exp = (unsigned int)cap_value(md->db->base_exp * per * bonus/100. * map->list[m].bexp/100., 1, UINT_MAX);
+			base_exp = base_exp * max(md->status.base_exp_multiplier, 100) / 100;
 
 		if (map->list[m].flag.nojobexp || !md->db->job_exp || md->dmglog[i].flag == MDLF_HOMUN) //Homun earned job-exp is always lost.
 			job_exp = 0;
 		else
 			job_exp = (unsigned int)cap_value(md->db->job_exp * per * bonus/100. * map->list[m].jexp/100., 1, UINT_MAX);
+			job_exp = job_exp * max(md->status.job_exp_multiplier, 100) / 100;
 
 		if ( (temp = tmpsd[i]->status.party_id) > 0 ) {
 			int j;

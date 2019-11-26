@@ -19359,10 +19359,10 @@ static BUILDIN(setunitdata)
 		switch (type)
 		{
 		case UDT_BASE_EXP:
-			md->db->base_exp = val;
+			md->status.base_exp_multiplier = val;
 			break;
 		case UDT_JOB_EXP:
-			md->db->job_exp = val;
+			md->status.job_exp_multiplier = val;
 			break;
 		case UDT_SIZE:
 			md->status.size = (unsigned char) val;
