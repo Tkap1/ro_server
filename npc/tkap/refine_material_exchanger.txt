@@ -5,6 +5,7 @@ prontera,148,170,4	script	Material Exchanger	4_M_DWARF,{
 	
 on_talk:
 	
+	freeloop(true);
 	while(countitem(756) >= 5)  // Rough oridecon
 	{
 		delitem(756, 5);
@@ -16,6 +17,7 @@ on_talk:
 		delitem(757, 5);
 		getitem(985, 1);
 	}
+	freeloop(false);
 	
 end;
 

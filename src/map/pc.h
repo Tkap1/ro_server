@@ -493,6 +493,7 @@ END_ZEROED_BLOCK;
 	int duel_invite;
 
 	int killerrid, killedrid;
+	int killedgid; // Tkap:
 
 	int cashPoints, kafraPoints;
 	int rental_timer;

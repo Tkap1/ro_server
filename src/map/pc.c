@@ -8117,7 +8117,7 @@ static int pc_dead(struct map_session_data *sd, struct block_list *src)
 
 	if (src != NULL && src->type == BL_PC) {
 		struct map_session_data *ssd = BL_UCAST(BL_PC, src);
-		pc->setparam(ssd, SP_KILLEDRID, sd->bl.id);
+		pc->setparam(ssd, SP_KILLEDRID, sd->bl.id); // Tkap: Maybe I need to add to this
 		npc->script_event(ssd, NPCE_KILLPC);
 
 		achievement->validate_pc_kill(ssd, sd); // Achievements [Smokexyz/Hercules]
@@ -8400,6 +8400,7 @@ static int64 pc_readparam(const struct map_session_data *sd, int type)
 		case SP_FAME:            val = sd->status.fame; break;
 		case SP_KILLERRID:       val = sd->killerrid; break;
 		case SP_KILLEDRID:       val = sd->killedrid; break;
+		case SP_KILLEDGID:       val = sd->killedgid; break;
 		case SP_SLOTCHANGE:      val = sd->status.slotchange; break;
 		case SP_CHARRENAME:      val = sd->status.rename; break;
 		case SP_MOD_EXP:         val = sd->status.mod_exp; break;
@@ -8663,6 +8664,9 @@ static int pc_setparam(struct map_session_data *sd, int type, int64 val)
 		return 1;
 	case SP_KILLEDRID:
 		sd->killedrid = (int32)val;
+		return 1;
+	case SP_KILLEDGID: // Tkap:
+		sd->killedgid = (int32)val;
 		return 1;
 	case SP_SLOTCHANGE:
 		sd->status.slotchange = (int32)val;
