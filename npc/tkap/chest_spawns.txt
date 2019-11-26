@@ -86,6 +86,7 @@ OnNPCKillEvent:
 	
 	
 	.@mob_hp = getmonsterinfo(killedrid, MOB_MAXHP);
+	dispbottom .@mob_hp;
 	
 	// Get the party members
 	getpartymember(getcharid(CHAR_ID_PARTY), 0);
