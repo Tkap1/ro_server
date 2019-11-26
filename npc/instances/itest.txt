@@ -262,12 +262,12 @@ prontera,169,199,3	script	itest	PORTAL,{
 					disablenpc instance_npcname("izd02", .@instance);
 					
 					.faceworm_dark_start = 50;
-					.faceworm_dark_killed = 49;
+					.faceworm_dark_killed = 0;
 					.faceworm_mvps_killed = 0;
 					.faceworm_spawned_mvps = false;
 					
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm, MOB_NAME), .id_faceworm, 500);
-					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_dark_faceworm, MOB_NAME), .id_dark_faceworm, .faceworm_dark_start, "itest::On_dark_faceworm_kill");
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_dark_faceworm, MOB_NAME), .id_dark_faceworm, .faceworm_dark_start * 2, "itest::On_dark_faceworm_kill");
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm_egg, MOB_NAME), .id_faceworm_egg, 225);
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm_larva, MOB_NAME), .id_faceworm_larva, 225);
 					
