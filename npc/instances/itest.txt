@@ -1,8 +1,6 @@
 
 prontera,169,199,3	script	itest	PORTAL,{
 	
-	// .@foo = monster("this", -1, -1, __ja__, 1002, 1);
-	// setunitdata(.@foo, UDT_BASE_EXP, 200);
 	callsub(on_talk);
 	end;
 	
@@ -10,30 +8,67 @@ prontera,169,199,3	script	itest	PORTAL,{
 		.orc_zombie_id = 3383;
 		.orc_skeleton_id = 3384;
 		.drainliar_id = 3385;
-		.map_name$ = "orcsdun01";
-		.instance_name$ = "1@orcsdun01";
+		.instance_names$[0] = "1@orcsdun01";
 		.EASY = 1;
 		.MEDIUM = 2;
 		.HARD = 3;
+		
+		.ORC_INSTANCE = 1;
+		.FACEWORM_INSTANCE = 2;
+		
+		setarray(.base_map_names$[0],
+		"orcsdun01",
+		"iz_dun00"
+		);
+		
+		setarray(.instance_display_names$[0],
+		"Orc Instance",
+		"Faceworm Instance"
+		);
+		
+		setarray(.instance_names$[0],
+		"1@orcsdun01",
+		"1@iz_dun00"
+		);
+		
+		.id_faceworm = 2528;
+		.id_faceworm_queen = 2529;
+		.id_dark_faceworm = 2530;
+		.id_faceworm_queen_red = 2532;
+		.id_faceworm_queen_green = 2533;
+		.id_faceworm_queen_blue = 2534;
+		.id_faceworm_queen_yellow = 2535;
+		.id_faceworm_egg = 2540;
+		.id_faceworm_larva = 2541;
+		
+		setarray(.faceworm_possible_mvps[0],
+		.id_faceworm_queen,
+		.id_faceworm_queen_red,
+		.id_faceworm_queen_green,
+		.id_faceworm_queen_blue,
+		.id_faceworm_queen_yellow
+		);
+		
+		.instance_selection$ = "Orc Instance:Faceworm Instance:Cancel";
+		
 	end;
 	
 	on_talk:
-		.@party_id = getcharid(CHAR_ID_PARTY);
-		.@p_name$ = getpartyname(.@party_id);
-
-
-		.@orctime = questprogress(12317, PLAYTIME);
-		if (.@orctime == 2) {
-			erasequest(12317);
+	
+		mes("What instance are you looking for?");
+		.@instance_choice = select(.instance_selection$);
+		mesclear();
+		
+		if(.@instance_choice == 3)
+		{
+			end;
 		}
-
-		if (.@orctime == 1) {
-			mes("You can enter the instance if it has been generated.");
-			next();
-			if (select("Enter the instance", "Cancel") == 2)
-				close();
-			// Fall through to access the dungeon
-		} else { // !.@orctime
+	
+		.@party_id = getcharid(CHAR_ID_PARTY);
+		
+		if(.@instance_choice == .ORC_INSTANCE)
+		{
+			
 			if (getcharid(CHAR_ID_CHAR) == getpartyleader(.@party_id, 2))
 			{
 				switch (select("Generate Instance", "Enter Instance", "Cancel"))
@@ -43,14 +78,19 @@ prontera,169,199,3	script	itest	PORTAL,{
 					.@difficulty_choice = select("Easy:Medium:Hard:Cancel");
 					if(.@difficulty_choice == 4) { close; }
 				
-					.@instance = instance_create("Orc Dungeon Hard", .@party_id);
+					.@temp_display_name$ = .instance_display_names$[.@instance_choice - 1];
+					if(.@difficulty_choice == .EASY) { .@temp_display_name$ += " - Easy";}
+					if(.@difficulty_choice == .MEDIUM) { .@temp_display_name$ += " - Medium";}
+					if(.@difficulty_choice == .HARD) { .@temp_display_name$ += " - Hard";}
+					
+					.@instance = instance_create(.@temp_display_name$, .@party_id);
 					if( .@instance < 0 )
 					{
 						mes "Failed to create the instance!";
 						close;
 					}
-					if( instance_attachmap(.map_name$, .@instance, false, .instance_name$) == "" )
-					// if( instance_attachmap(.instance_name$, .@instance) == "" )
+					if( instance_attachmap(.base_map_names$[.@instance_choice - 1], .@instance, false, .instance_names$[.@instance_choice - 1]) == "" )
+					// if( instance_attachmap(.instance_names$[.@instance_choice - 1], .@instance) == "" )
 					{
 						instance_destroy(.@instance);
 						mes "Failed to attach payon as a map!";
@@ -60,7 +100,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					instance_set_timeout(3600, 300, .@instance);
 					instance_init(.@instance);
 					
-					.difficulty = .@difficulty_choice;
+					.orc_difficulty = .@difficulty_choice;
 					
 					disablenpc instance_npcname("orc01-1", .@instance);
 					disablenpc instance_npcname("orc03", .@instance);
@@ -69,24 +109,24 @@ prontera,169,199,3	script	itest	PORTAL,{
 					.mvps_killed = 0;
 					.spawned_mvps = false;
 					
-					monster(.instance_name$, 0, 0, getmonsterinfo(.orc_zombie_id, MOB_NAME), .orc_zombie_id, 700, "itest::On_itest_kill");
-					monster(.instance_name$, 0, 0, getmonsterinfo(.orc_skeleton_id, MOB_NAME), .orc_skeleton_id, 300, "itest::On_itest_kill");
-					monster(.instance_name$, 0, 0, getmonsterinfo(.drainliar_id, MOB_NAME), .drainliar_id, 100, "itest::On_itest_kill");
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.orc_zombie_id, MOB_NAME), .orc_zombie_id, 700, "itest::On_itest_kill");
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.orc_skeleton_id, MOB_NAME), .orc_skeleton_id, 300, "itest::On_itest_kill");
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.drainliar_id, MOB_NAME), .drainliar_id, 100, "itest::On_itest_kill");
 					
-					if(.difficulty == .EASY)
+					if(.orc_difficulty == .EASY)
 					{
 						.mvps_to_spawn = 3;
 						.crystals_min = 1;
 						.crystals_max = 3;
 					}
 					
-					if(.difficulty == .MEDIUM)
+					if(.orc_difficulty == .MEDIUM)
 					{
 						.mvps_to_spawn = 4;
 						.crystals_min = 2;
 						.crystals_max = 4;
 						freeloop(true);
-						.@count = getunits(BL_MOB, .@units, false, .instance_name$);
+						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
 						{
 							.@maxhp_before = getunitdata(.@units[.@i], UDT_MAXHP);
@@ -108,13 +148,13 @@ prontera,169,199,3	script	itest	PORTAL,{
 						freeloop(false);
 					}
 					
-					if(.difficulty == .HARD)
+					if(.orc_difficulty == .HARD)
 					{
 						.mvps_to_spawn = 5;
 						.crystals_min = 3;
 						.crystals_max = 5;
 						freeloop(true);
-						.@count = getunits(BL_MOB, .@units, false, .instance_name$);
+						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
 						{
 							.@maxhp_before = getunitdata(.@units[.@i], UDT_MAXHP);
@@ -154,8 +194,9 @@ prontera,169,199,3	script	itest	PORTAL,{
 							set(getvariableofpc(player_died, @account_ids[.@i]), false);
 						}
 					}
-					
+					mes("The instance has been created!");
 					close();
+					
 				case 2:
 					break; // Fall through to access the dungeon (after the else)
 				case 3:
@@ -166,54 +207,203 @@ prontera,169,199,3	script	itest	PORTAL,{
 			{
 				end;
 			}
-			// Else access the dungeon
+
+			if (has_instance(.base_map_names$[.@instance_choice - 1]) == "")
+			{
+				mesf("Instance does not exist.");
+				mes("The party leader has not reserved entrance to the dungeon yet.");
+				next();
+				mes("Once the reservation is complete, the dungeon will be generated.");
+				mes("If your dungeon has been destroyed you must wait 7 days before re-entering.");
+				close();
+			}
+
+			warp .instance_names$[.@instance_choice - 1], 32, 169;
 		}
-
-		// Instance access
-
-		if (has_instance(.map_name$) == "")
+		
+		if(.@instance_choice == .FACEWORM_INSTANCE)
 		{
-			mesf("Instance does not exist.");
-			mes("The party leader has not reserved entrance to the dungeon yet.");
-			next();
-			mes("Once the reservation is complete, the dungeon will be generated.");
-			mes("If your dungeon has been destroyed you must wait 7 days before re-entering.");
-			close();
-		}
-
-		if (!questprogress(12317))
-			setquest(12317);
 			
-		warp .instance_name$, 32, 169;
+			if (getcharid(CHAR_ID_CHAR) == getpartyleader(.@party_id, 2))
+			{
+				switch (select("Generate Instance", "Enter Instance", "Cancel"))
+				{
+				case 1:
+				
+					.@difficulty_choice = select("Easy:Medium:Hard:Cancel");
+					if(.@difficulty_choice == 4) { close; }
+				
+					.@temp_display_name$ = .instance_display_names$[.@instance_choice - 1];
+					if(.@difficulty_choice == .EASY) { .@temp_display_name$ += " - Easy";}
+					if(.@difficulty_choice == .MEDIUM) { .@temp_display_name$ += " - Medium";}
+					if(.@difficulty_choice == .HARD) { .@temp_display_name$ += " - Hard";}
+					
+					.@instance = instance_create(.@temp_display_name$, .@party_id);
+					if( .@instance < 0 )
+					{
+						mes "Failed to create the instance!";
+						close;
+					}
+					if( instance_attachmap(.base_map_names$[.@instance_choice - 1], .@instance, false, .instance_names$[.@instance_choice - 1]) == "" )
+					// if( instance_attachmap(.instance_names$[.@instance_choice - 1], .@instance) == "" )
+					{
+						instance_destroy(.@instance);
+						mes "Failed to attach payon as a map!";
+						close;
+					}
+					// instance_attach(.@instance);
+					instance_set_timeout(3600, 300, .@instance);
+					instance_init(.@instance);
+					
+					.faceworm_difficulty = .@difficulty_choice;
+					
+					disablenpc instance_npcname("izd03", .@instance);
+					disablenpc instance_npcname("izd01-1", .@instance);
+					disablenpc instance_npcname("izd02", .@instance);
+					
+					.faceworm_dark_start = 50;
+					.faceworm_dark_killed = 49;
+					.faceworm_mvps_killed = 0;
+					.faceworm_spawned_mvps = false;
+					
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm, MOB_NAME), .id_faceworm, 500);
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_dark_faceworm, MOB_NAME), .id_dark_faceworm, .faceworm_dark_start, "itest::On_dark_faceworm_kill");
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm_egg, MOB_NAME), .id_faceworm_egg, 225);
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm_larva, MOB_NAME), .id_faceworm_larva, 225);
+					
+					if(.faceworm_difficulty == .EASY)
+					{
+						.faceworm_mvps_to_spawn = 1;
+						.faceworm_reward_min = 10;
+						.faceworm_reward_min = 20;
+					}
+					
+					if(.faceworm_difficulty == .MEDIUM)
+					{
+						.faceworm_mvps_to_spawn = 2;
+						.faceworm_reward_min = 20;
+						.faceworm_reward_min = 40;
+						freeloop(true);
+						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
+						for(.@i = 0; .@i < .@count; .@i++)
+						{
+							.@maxhp_before = getunitdata(.@units[.@i], UDT_MAXHP);
+							setunitdata(.@units[.@i], UDT_MAXHP, .@maxhp_before * 2);
+							setunitdata(.@units[.@i], UDT_HP, .@maxhp_before * 2);
+							
+							.@atkmin_before = getunitdata(.@units[.@i], UDT_ATKMIN);
+							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 2);
+							
+							.@atkmax_before = getunitdata(.@units[.@i], UDT_ATKMAX);
+							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 2);
+							
+							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
+							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 83 / 100);
+							
+							setunitdata(.@units[.@i], UDT_BASE_EXP, 160);
+							setunitdata(.@units[.@i], UDT_JOB_EXP, 160);
+						}
+						freeloop(false);
+					}
+					
+					if(.faceworm_difficulty == .HARD)
+					{
+						.faceworm_mvps_to_spawn = 3;
+						.faceworm_reward_min = 40;
+						.faceworm_reward_min = 60;
+						freeloop(true);
+						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
+						for(.@i = 0; .@i < .@count; .@i++)
+						{
+							.@maxhp_before = getunitdata(.@units[.@i], UDT_MAXHP);
+							setunitdata(.@units[.@i], UDT_MAXHP, .@maxhp_before * 3);
+							setunitdata(.@units[.@i], UDT_HP, .@maxhp_before * 3);
+							
+							.@atkmin_before = getunitdata(.@units[.@i], UDT_ATKMIN);
+							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 3);
+							
+							.@atkmax_before = getunitdata(.@units[.@i], UDT_ATKMAX);
+							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 3);
+							
+							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
+							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 66 / 100);
+							
+							setunitdata(.@units[.@i], UDT_BASE_EXP, 190);
+							setunitdata(.@units[.@i], UDT_JOB_EXP, 190);
+						}
+						freeloop(false);
+					}
+					
+					// Get the party members
+					getpartymember(getcharid(CHAR_ID_PARTY), 0);
+					copyarray(@names$[0], $@partymembername$[0], $@partymembercount);
+					
+					getpartymember(getcharid(CHAR_ID_PARTY), 1);
+					copyarray(@char_ids[0], $@partymembercid[0], $@partymembercount);
+					getpartymember(getcharid(CHAR_ID_PARTY), 2);
+					copyarray(@account_ids[0], $@partymemberaid[0], $@partymembercount);
+					
+					@party_member_count = $@partymembercount;
+					
+					for(.@i = 0; .@i < @party_member_count; .@i++)
+					{
+						if(isloggedin(@account_ids[.@i], @char_ids[.@i]))
+						{
+							set(getvariableofpc(player_died, @account_ids[.@i]), false);
+						}
+					}
+					mes("The instance has been created!");
+					close();
+					
+				case 2:
+					break; // Fall through to access the dungeon (after the else)
+				case 3:
+					close();
+				}
+			}
+			else if (select("Enter Instance:Cancel") == 2)
+			{
+				end;
+			}
+
+			if (has_instance(.base_map_names$[.@instance_choice - 1]) == "")
+			{
+				mesf("Instance does not exist.");
+				mes("The party leader has not reserved entrance to the dungeon yet.");
+				next();
+				mes("Once the reservation is complete, the dungeon will be generated.");
+				mes("If your dungeon has been destroyed you must wait 7 days before re-entering.");
+				close();
+			}
+
+			warp .instance_names$[.@instance_choice - 1], 39, 59;
+		}
 		
 	end;
 	
-	On_itest_kill:
+	On_dark_faceworm_kill:
 	
-		.total_mobs -= 1;
-		if(!.spawned_mvps)
+		.faceworm_dark_killed += 1;
+		if(!.faceworm_spawned_mvps)
 		{
-			if(.total_mobs < 201 && .total_mobs > 0)
+			.@mobs_left_until_mvp_spawn = .faceworm_dark_start - .faceworm_dark_killed;
+			announce(sprintf("%d %s remanining until the %s", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "Dark Faceworm" : "Dark Faceworms"), (.faceworm_difficulty == .EASY ? "MVP spawns" : "MVPs spawn")), bc_blue|bc_map);
+			if(.@mobs_left_until_mvp_spawn == 0)
 			{
-				.@mobs_left_until_mvp_spawn = .total_mobs - 50;
-				announce(sprintf("%d %s remanining until the MVPs spawn", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monster" : "monsters")), bc_blue|bc_map);
-			}
-			if(.total_mobs < 51)
-			{
-				.spawned_mvps = true;
-				announce(sprintf("%d MVPs have been spawned!", .mvps_to_spawn), bc_blue|bc_map);
-				for(.@i = 0; .@i < .mvps_to_spawn; .@i++)
+				.faceworm_spawned_mvps = true;
+				announce(sprintf("%s", (.mvps_to_spawn > 1 ? "The MVPs have been spawned!" : "The MVP has spawned!")), bc_blue|bc_map);
+				for(.@i = 0; .@i < .faceworm_mvps_to_spawn; .@i++)
 				{
-					monster("this",0, 0,"--ja--",-3,1, "itest::On_MVP_killed");
+					areamonster("this",237-10, 164+10,237+10,164-10,"--ja--",.faceworm_possible_mvps[rand(0, getarraysize(.faceworm_possible_mvps) - 1)], 1, "itest::On_faceworm_mvp_killed");
 				}
 			}
 		}
 		
 	end;
 	
-	On_MVP_killed:
-		.mvps_killed += 1;
-		if(.mvps_killed == .mvps_to_spawn)
+	On_faceworm_mvp_killed:
+		.faceworm_mvps_killed += 1;
+		if(.faceworm_mvps_killed == .faceworm_mvps_to_spawn)
 		{
 			announce("All MVPs have been killed!", bc_blue|bc_map);
 			getpartymember(getcharid(CHAR_ID_PARTY), 0);
@@ -249,7 +439,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 							.@died = getvariableofpc(player_died, @account_ids[.@i]);
 							if(!.@died)
 							{
-								getitem(Temporal_Crystal, rand(.crystals_min, .crystals_max), @account_ids[.@i]);
+								getitem(Treasure_Box, rand(.faceworm_reward_min, .faceworm_reward_max), @account_ids[.@i]);
 							}
 						}
 					}
@@ -257,161 +447,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 			}
 			else if(!player_died)
 			{
-				getitem(Temporal_Crystal, rand(.crystals_min, .crystals_max), @account_ids[.@i]);
+				getitem(Treasure_Box, rand(.faceworm_reward_min, .faceworm_reward_max), @account_ids[.@i]);
 			}
 		}
-	
 }
-	
-	// Al hablar, menu
-	// si eres party leader, menu es entrar - generar - salir
-	// si le das a entrar, y no esta generada, puta.
-	// si le generar, genera
-	
-	// .@range = 10;
-	// .map_name$ = getmapinfo(MAPINFO_NAME);
-	// getmapxy(.map_name$, .@player_x, .@player_y, UNITTYPE_PC);
-	// areamonster("this", (.@player_x - .@range), (.@player_y + .@range), (.@player_x + .@range), (.@player_y - .@range), getmonsterinfo(.@mob_id, MOB_NAME), .@mob_id, 1);
-// 	if(.instance_created)
-// 	{
-// 		.@choice = select("Join Instance:Destroy Instance:Cancel");
-// 		if(.@choice == 1)
-// 		{
-// 			player_died = false;
-// 			warp .instance_name$, 32, 169;
-// 		}
-// 		if(.@choice == 2)
-// 		{
-// 			.instance_created = false;
-// 			close();
-// 		}
-// 		if(.@choice == 3)
-// 		{
-// 			close();
-// 		}
-// 	}
-// 	else
-// 	{
-// 		.@choice = select("Generate Instance:Cancel");
-// 		if(.@choice == 1)
-// 		{
-// 			.mvps_killed = 0;
-// 			.total_mobs = 1100;
-// 			.spawned_mvps = false;
-// 			set .@instance, instance_create("Payon instanced", getcharid(1));
-// 			if( .@instance < 0 )
-// 			{
-// 				mes "Failed to create the instance!";
-// 				close;
-// 			}
-// 			if( instance_attachmap(.map_name$, .@instance, false, .instance_name$) == "" )
-// 			// *instance_attachmap("<map name>", <instance id>{, <use base name>{, "<new map name>"}})
-// 			{
-// 				instance_destroy(.@instance);
-// 				mes "Failed to attach payon as a map!";
-// 				close;
-// 			}
-// 			instance_attach(.@instance);
-// 			instance_set_timeout(3600, 300, .@instance);
-// 			instance_init(.@instance);
-// 			.instance_created = true;
-
-// 			// warp .instance_name$, 32, 169;
-// 			// warpparty(.instance_name$, 32, 169, getcharid(CHAR_ID_PARTY));
-			
-// 			// orcsdun01,32,172,0	warp	orc01-1	3,1,in_orcs01,30,180
-// 			// orcsdun01,183,8,0	warp	orc03	4,2,orcsdun02,21,185
-// 			// disablenpc instance_npcname("warp#orc01-1", .@instance);
-// 			// disablenpc instance_npcname("warp", .@instance);
-// 			disablenpc instance_npcname("orc01-1", .@instance);
-// 			disablenpc instance_npcname("orc03", .@instance);
-			
-// 			monster(.instance_name$, 0, 0, getmonsterinfo(.orc_zombie_id, MOB_NAME), .orc_zombie_id, 700, "itest::On_itest_kill");
-// 			monster(.instance_name$, 0, 0, getmonsterinfo(.orc_skeleton_id, MOB_NAME), .orc_skeleton_id, 300, "itest::On_itest_kill");
-// 			monster(.instance_name$, 0, 0, getmonsterinfo(.drainliar_id, MOB_NAME), .drainliar_id, 100, "itest::On_itest_kill");
-			
-// 			close();
-// 		}
-// 		if(.@choice == 2)
-// 		{
-// 			close();
-// 		}
-// 	}
-	
-// 	end;
-	
-// 	On_itest_kill:
-	
-// 		.total_mobs -= 1;
-// 		if(!.spawned_mvps)
-// 		{
-// 			if(.total_mobs < 201 && .total_mobs > 0)
-// 			{
-// 				.@mobs_left_until_mvp_spawn = .total_mobs - 50;
-// 				announce(sprintf("%d %s remanining until MVP spawns", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monster" : "monsters")), bc_blue|bc_map);
-// 			}
-// 			if(.total_mobs < 51)
-// 			{
-// 				.spawned_mvps = 1;
-// 				announce("3 MVPs have been spawned!", bc_blue|bc_map);
-// 				monster("this",0, 0,"--ja--",-3,1, "itest::On_MVP_killed");
-// 				monster("this",0, 0,"--ja--",-3,1,"itest::On_MVP_killed");
-// 				monster("this",0, 0,"--ja--",-3,1,"itest::On_MVP_killed");
-// 			}
-// 		}
-		
-		
-// 	end;
-	
-// 	On_MVP_killed:
-// 		.mvps_killed += 1;
-// 		if(.mvps_killed == 3)
-// 		{
-// 			announce("All MVPs have been killed!", bc_blue|bc_map);
-// 			getpartymember(getcharid(CHAR_ID_PARTY), 0);
-// 			copyarray(@names$[0], $@partymembername$[0], $@partymembercount);
-			
-// 			if($@partymembercount == 0)
-// 			{
-// 				@is_on_party = false;
-// 			}
-			
-// 			else
-// 			{
-// 				@is_on_party = true;
-// 				getpartymember(getcharid(CHAR_ID_PARTY), 1);
-// 				copyarray(@char_ids[0], $@partymembercid[0], $@partymembercount);
-// 				getpartymember(getcharid(CHAR_ID_PARTY), 2);
-// 				copyarray(@account_ids[0], $@partymemberaid[0], $@partymembercount);
-				
-// 				@party_member_count = $@partymembercount;
-// 				@killer_map$ = strcharinfo(PC_MAP);
-// 			}
-			
-			
-// 			if(@is_on_party)
-// 			{
-// 				for(.@i = 0; .@i < @party_member_count; .@i++)
-// 				{
-// 					if(isloggedin(@account_ids[.@i], @char_ids[.@i]))
-// 					{
-// 						@party_member_map$ = strcharinfo(PC_MAP, "a", @account_ids[.@i]);
-// 						if(@killer_map$ == @party_member_map$)
-// 						{
-// 							.@died = getvariableofpc(player_died, @account_ids[.@i]);
-// 							if(!.@died)
-// 							{
-// 								getitem(Temporal_Crystal, rand(1,3), @account_ids[.@i]);
-// 							}
-// 						}
-// 					}
-// 				}
-// 			}
-// 			else if(!player_died)
-// 			{
-// 				getitem(Temporal_Crystal, rand(1,3), @account_ids[.@i]);
-// 			}
-// 		}
-	
-// 	end;
-// }
