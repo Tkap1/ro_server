@@ -134,10 +134,10 @@ prontera,169,199,3	script	itest	PORTAL,{
 							setunitdata(.@units[.@i], UDT_HP, .@maxhp_before * 2);
 							
 							.@atkmin_before = getunitdata(.@units[.@i], UDT_ATKMIN);
-							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 2);
+							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 150 / 100);
 							
 							.@atkmax_before = getunitdata(.@units[.@i], UDT_ATKMAX);
-							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 2);
+							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 150 / 100);
 							
 							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
 							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 83 / 100);
@@ -162,10 +162,10 @@ prontera,169,199,3	script	itest	PORTAL,{
 							setunitdata(.@units[.@i], UDT_HP, .@maxhp_before * 3);
 							
 							.@atkmin_before = getunitdata(.@units[.@i], UDT_ATKMIN);
-							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 3);
+							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 2);
 							
 							.@atkmax_before = getunitdata(.@units[.@i], UDT_ATKMAX);
-							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 3);
+							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 2);
 							
 							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
 							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 66 / 100);
@@ -267,7 +267,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					.faceworm_spawned_mvps = false;
 					
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm, MOB_NAME), .id_faceworm, 500);
-					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_dark_faceworm, MOB_NAME), .id_dark_faceworm, .faceworm_dark_start * 2, "itest::On_dark_faceworm_kill");
+					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_dark_faceworm, MOB_NAME), .id_dark_faceworm, .faceworm_dark_start * 3, "itest::On_dark_faceworm_kill");
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm_egg, MOB_NAME), .id_faceworm_egg, 225);
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.id_faceworm_larva, MOB_NAME), .id_faceworm_larva, 225);
 					
@@ -292,10 +292,10 @@ prontera,169,199,3	script	itest	PORTAL,{
 							setunitdata(.@units[.@i], UDT_HP, .@maxhp_before * 2);
 							
 							.@atkmin_before = getunitdata(.@units[.@i], UDT_ATKMIN);
-							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 2);
+							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 150 / 100);
 							
 							.@atkmax_before = getunitdata(.@units[.@i], UDT_ATKMAX);
-							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 2);
+							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 150 / 100);
 							
 							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
 							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 83 / 100);
@@ -320,10 +320,10 @@ prontera,169,199,3	script	itest	PORTAL,{
 							setunitdata(.@units[.@i], UDT_HP, .@maxhp_before * 3);
 							
 							.@atkmin_before = getunitdata(.@units[.@i], UDT_ATKMIN);
-							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 3);
+							setunitdata(.@units[.@i], UDT_ATKMIN, .@atkmin_before * 2);
 							
 							.@atkmax_before = getunitdata(.@units[.@i], UDT_ATKMAX);
-							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 3);
+							setunitdata(.@units[.@i], UDT_ATKMAX, .@atkmax_before * 2);
 							
 							.@movespeed_before = getunitdata(.@units[.@i], UDT_SPEED);
 							setunitdata(.@units[.@i], UDT_SPEED, .@movespeed_before * 66 / 100);
