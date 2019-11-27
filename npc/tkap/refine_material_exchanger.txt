@@ -6,13 +6,26 @@ prontera,148,170,4	script	Material Exchanger	4_M_DWARF,{
 on_talk:
 	
 	freeloop(true);
+	
+	while(countitem(984) >= 5) // Oridecon for bradium exchange
+	{
+		delitem(984, 5);
+		getitem(6224, 1);
+	}
+	
+	while(countitem(985) >= 5) // Elunium for carnium exchange
+	{
+		delitem(985, 5);
+		getitem(6223, 1);
+	}
+	
 	while(countitem(756) >= 5)  // Rough oridecon
 	{
 		delitem(756, 5);
 		getitem(984, 1);
 	}
 	
-	while(countitem(757) >= 5)  // Rough oridecon
+	while(countitem(757) >= 5)  // Rough elunium
 	{
 		delitem(757, 5);
 		getitem(985, 1);
