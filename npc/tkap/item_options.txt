@@ -157,9 +157,11 @@ on_talk:
 		mes(.npc_name$);
 		mes("Select which item to enchant");
 		
+		if(!last_enchant_choice) { last_enchant_choice = 1; }
+		
 		// Build the Menu.
 		setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
-		.@menu$ = "";
+		.@menu$ = sprintf("Last choice [%s]:", @positions$[last_enchant_choice]);
 		for (.@i = 1; .@i <= 10; ++.@i)
 		{
 			if(getequipisequiped(.@i))
@@ -173,7 +175,9 @@ on_talk:
 		}
 		
 		// Select the part.
-		.@equip_index = select(.@menu$);
+		.@temp_choice = select(.@menu$);
+		if(.@temp_choice == 1) { .@equip_index = last_enchant_choice; }
+		else { .@equip_index = .@temp_choice - 1; }
 		
 		// Check if it's worn.
 		if (!getequipisequiped(.@equip_index)) {
