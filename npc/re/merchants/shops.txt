@@ -467,6 +467,26 @@ OnInit:
 	sellitem Wing_Of_Butterfly;
 	sellitem Booby_Trap;
 	sellitem One_Eyed_Glass;
+	
+	// Warlock spell books
+	sellitem 6189;
+	sellitem 6190;
+	sellitem 6191;
+	sellitem 6192;
+	sellitem 6193;
+	sellitem 6194;
+	sellitem 6195;
+	sellitem 6196;
+	sellitem 6197;
+	sellitem 6198;
+	sellitem 6199;
+	sellitem 6200;
+	sellitem 6201;
+	sellitem 6202;
+	sellitem 6203;
+	sellitem 6204;
+	sellitem 6205;
+	
 }
 
 prt_fild05,290,221,2	trader	Tool Dealer#prt	4_M_01,{

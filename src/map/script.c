@@ -9554,6 +9554,22 @@ static BUILDIN(getequipisenableopt)
 	return true;
 }
 
+// Tkap: Call this to use the skill read spellbook, param is the ID of the spellbook item. See "spellbook_db.txt"
+static BUILDIN(readspellbook)
+{
+	int num;
+	struct map_session_data *sd;
+	num = script_getnum(st,2);
+
+	sd = script->rid2sd(st);
+	if( sd == NULL )
+		return true;
+		
+	skill->spellbook(sd, num);
+
+	return true;
+}
+
 /*==========================================
  * Chk if the item equiped at pos is identify (huh ?)
  * return (npc)
@@ -20320,7 +20336,7 @@ static BUILDIN(getunitdata)
 
 		switch (type)
 		{
-			// Tkap:
+			// Tkap: This is a bad name. It should be BASE_EXP_MULTIPLIER, because that is what it does. Same with job.
 		case UDT_BASE_EXP:        script_pushint(st, md->db->base_exp); break;
 		case UDT_JOB_EXP:        script_pushint(st, md->db->job_exp); break;
 		
@@ -26120,6 +26136,7 @@ static void script_parse_builtin(void)
 		BUILDIN_DEF(repairall,""),
 		BUILDIN_DEF(getequipisequiped,"i"),
 		BUILDIN_DEF(getequipisenableref,"i"),
+		BUILDIN_DEF(readspellbook,"i"),
 		BUILDIN_DEF(getequipisidentify,"i"),
 		BUILDIN_DEF(getequiprefinerycnt,"i*"),
 		BUILDIN_DEF(getequipweaponlv,"i"),

@@ -2803,7 +2803,7 @@ static int status_calc_pc_(struct map_session_data *sd, enum e_status_calc_opt o
 	sd->bonus.double_rate += sd->bonus.double_add_rate;
 	sd->bonus.perfect_hit += sd->bonus.perfect_hit_add;
 	// sd->bonus.splash_range += sd->bonus.splash_add_range;
-	sd->bonus.splash_range += sd->bonus.splash_add_range + 1; // Tkap: Trying to make autos have aoe
+	sd->bonus.splash_range += sd->bonus.splash_add_range + 1; // Tkap: Make autos have aoe
 
 	// Damage modifiers from weapon type
 	sd->right_weapon.atkmods[0] = status->dbs->atkmods[0][sd->weapontype1];

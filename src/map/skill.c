@@ -5149,7 +5149,7 @@ static int skill_castend_damage_id(struct block_list *src, struct block_list *bl
 					uint16 spell_skill_id, spell_skill_lv, point, s = 0;
 					int spell[SC_SPELLBOOK7-SC_SPELLBOOK1 + 1];
 					int cooldown;
-
+					
 					for(i = SC_SPELLBOOK7; i >= SC_SPELLBOOK1; i--) // List all available spell to be released
 					if( sc->data[i] ) spell[s++] = i;
 
@@ -9372,6 +9372,7 @@ static int skill_castend_nodamage_id(struct block_list *src, struct block_list *
 			break;
 
 		case WL_READING_SB:
+			break; // Tkap: trying to disable reading spell book skill
 			if( sd ) {
 				struct status_change *sc = status->get_sc(bl);
 				int i;
@@ -18855,6 +18856,8 @@ static int skill_spellbook(struct map_session_data *sd, int nameid)
 		clif->skill_fail(sd, WL_READING_SB, USESKILL_FAIL_SPELLBOOK_READING, 0, 0);
 		return 0;
 	}
+
+	// nameid = 6195; // Tkap: this makes every spellbook comet
 
 	ARR_FIND(0,MAX_SKILL_SPELLBOOK_DB,i,skill->dbs->spellbook_db[i].nameid == nameid); // Search for information of this item
 	if( i == MAX_SKILL_SPELLBOOK_DB ) return 0;
