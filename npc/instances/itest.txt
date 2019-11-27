@@ -117,7 +117,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					{
 						.orc_mvps_to_spawn = 3;
 						.crystals_min = 1;
-						.crystals_max = 3;
+						.crystals_max = 2;
 					}
 					
 					if(.orc_difficulty == .MEDIUM)
@@ -151,8 +151,8 @@ prontera,169,199,3	script	itest	PORTAL,{
 					if(.orc_difficulty == .HARD)
 					{
 						.orc_mvps_to_spawn = 5;
-						.crystals_min = 3;
-						.crystals_max = 5;
+						.crystals_min = 4;
+						.crystals_max = 6;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
@@ -442,17 +442,19 @@ prontera,169,199,3	script	itest	PORTAL,{
 						if(@killer_map$ == @party_member_map$)
 						{
 							.@died = getvariableofpc(player_died, @account_ids[.@i]);
-							if(!.@died)
-							{
-								getitem(Temporal_Crystal, rand(.crystals_min, .crystals_max), @account_ids[.@i]);
-							}
+							
+							if(.@died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
+							else { .@amount = rand(.crystals_min, .crystals_max); }
+							if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
 						}
 					}
 				}
 			}
-			else if(!player_died)
+			else
 			{
-				getitem(Temporal_Crystal, rand(.crystals_min, .crystals_max), @account_ids[.@i]);
+				if(player_died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
+				else { .@amount = rand(.crystals_min, .crystals_max); }
+				if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
 			}
 		}
 	end;
@@ -514,17 +516,18 @@ prontera,169,199,3	script	itest	PORTAL,{
 						if(@killer_map$ == @party_member_map$)
 						{
 							.@died = getvariableofpc(player_died, @account_ids[.@i]);
-							if(!.@died)
-							{
-								getitem(Treasure_Box, rand(.faceworm_reward_min, .faceworm_reward_max), @account_ids[.@i]);
-							}
+							if(.@died) { .@amount = rand(.faceworm_reward_min / 2, .faceworm_reward_max / 2); }
+							else { .@amount = rand(.faceworm_reward_min, .faceworm_reward_max); }
+							if(.@amount > 0) { getitem(Treasure_Box, .@amount, @account_ids[.@i]); }
 						}
 					}
 				}
 			}
-			else if(!player_died)
+			else
 			{
-				getitem(Treasure_Box, rand(.faceworm_reward_min, .faceworm_reward_max), @account_ids[.@i]);
+				if(player_died) { .@amount = rand(.faceworm_reward_min / 2, .faceworm_reward_max / 2); }
+				else { .@amount = rand(.faceworm_reward_min, .faceworm_reward_max); }
+				if(.@amount > 0) { getitem(Treasure_Box, .@amount, @account_ids[.@i]); }
 			}
 		}
 }
