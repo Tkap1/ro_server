@@ -25,6 +25,7 @@ OnInit:
 	18564,
 	18603,
 	18611,
+	18813,
 	19020, // faltan combos - Survive_Circlet
 	19139, // faltan combos - Survivors_Orb
 	20783,
