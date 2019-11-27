@@ -105,9 +105,9 @@ prontera,169,199,3	script	itest	PORTAL,{
 					disablenpc instance_npcname("orc01-1", .@instance);
 					disablenpc instance_npcname("orc03", .@instance);
 					
-					.total_mobs = 1100;
-					.mvps_killed = 0;
-					.spawned_mvps = false;
+					.orc_total_mobs = 1100;
+					.orc_mvps_killed = 0;
+					.orc_spawned_mvps = false;
 					
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.orc_zombie_id, MOB_NAME), .orc_zombie_id, 700, "itest::On_itest_kill");
 					monster(.instance_names$[.@instance_choice - 1], 0, 0, getmonsterinfo(.orc_skeleton_id, MOB_NAME), .orc_skeleton_id, 300, "itest::On_itest_kill");
@@ -115,14 +115,14 @@ prontera,169,199,3	script	itest	PORTAL,{
 					
 					if(.orc_difficulty == .EASY)
 					{
-						.mvps_to_spawn = 3;
+						.orc_mvps_to_spawn = 3;
 						.crystals_min = 1;
 						.crystals_max = 3;
 					}
 					
 					if(.orc_difficulty == .MEDIUM)
 					{
-						.mvps_to_spawn = 4;
+						.orc_mvps_to_spawn = 4;
 						.crystals_min = 2;
 						.crystals_max = 4;
 						freeloop(true);
@@ -150,7 +150,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					
 					if(.orc_difficulty == .HARD)
 					{
-						.mvps_to_spawn = 5;
+						.orc_mvps_to_spawn = 5;
 						.crystals_min = 3;
 						.crystals_max = 5;
 						freeloop(true);
@@ -381,6 +381,83 @@ prontera,169,199,3	script	itest	PORTAL,{
 		
 	end;
 	
+	
+	// =============== EVENTS ==================
+	On_itest_kill:
+	
+		.orc_total_mobs -= 1;
+		if(!.orc_spawned_mvps)
+		{
+			if(.orc_total_mobs < 201 && .orc_total_mobs > 0)
+			{
+				.@mobs_left_until_mvp_spawn = .orc_total_mobs - 50;
+				announce(sprintf("%d %s remanining until the MVPs spawn", .@mobs_left_until_mvp_spawn, (.@mobs_left_until_mvp_spawn == 1 ? "monster" : "monsters")), bc_blue|bc_map);
+			}
+			if(.orc_total_mobs < 51)
+			{
+				.orc_spawned_mvps = true;
+				announce(sprintf("%d MVPs have been spawned!", .orc_mvps_to_spawn), bc_blue|bc_map);
+				for(.@i = 0; .@i < .orc_mvps_to_spawn; .@i++)
+				{
+					monster("this",0, 0,"--ja--",-3,1, "itest::On_MVP_killed");
+				}
+			}
+		}
+		
+	end;
+	
+	On_MVP_killed:
+		.orc_mvps_killed += 1;
+		if(.orc_mvps_killed == .orc_mvps_to_spawn)
+		{
+			announce("All MVPs have been killed!", bc_blue|bc_map);
+			getpartymember(getcharid(CHAR_ID_PARTY), 0);
+			copyarray(@names$[0], $@partymembername$[0], $@partymembercount);
+			
+			if($@partymembercount == 0)
+			{
+				@is_on_party = false;
+			}
+			
+			else
+			{
+				@is_on_party = true;
+				getpartymember(getcharid(CHAR_ID_PARTY), 1);
+				copyarray(@char_ids[0], $@partymembercid[0], $@partymembercount);
+				getpartymember(getcharid(CHAR_ID_PARTY), 2);
+				copyarray(@account_ids[0], $@partymemberaid[0], $@partymembercount);
+				
+				@party_member_count = $@partymembercount;
+				@killer_map$ = strcharinfo(PC_MAP);
+			}
+			
+			
+			if(@is_on_party)
+			{
+				for(.@i = 0; .@i < @party_member_count; .@i++)
+				{
+					if(isloggedin(@account_ids[.@i], @char_ids[.@i]))
+					{
+						@party_member_map$ = strcharinfo(PC_MAP, "a", @account_ids[.@i]);
+						if(@killer_map$ == @party_member_map$)
+						{
+							.@died = getvariableofpc(player_died, @account_ids[.@i]);
+							if(!.@died)
+							{
+								getitem(Temporal_Crystal, rand(.crystals_min, .crystals_max), @account_ids[.@i]);
+							}
+						}
+					}
+				}
+			}
+			else if(!player_died)
+			{
+				getitem(Temporal_Crystal, rand(.crystals_min, .crystals_max), @account_ids[.@i]);
+			}
+		}
+	end;
+	
+	
 	On_dark_faceworm_kill:
 	
 		.faceworm_dark_killed += 1;
@@ -391,7 +468,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 			if(.@mobs_left_until_mvp_spawn == 0)
 			{
 				.faceworm_spawned_mvps = true;
-				announce(sprintf("%s", (.mvps_to_spawn > 1 ? "The MVPs have been spawned!" : "The MVP has spawned!")), bc_blue|bc_map);
+				announce(sprintf("%s", (.orc_mvps_to_spawn > 1 ? "The MVPs have been spawned!" : "The MVP has spawned!")), bc_blue|bc_map);
 				for(.@i = 0; .@i < .faceworm_mvps_to_spawn; .@i++)
 				{
 					areamonster("this",237-10, 164+10,237+10,164-10,"--ja--",.faceworm_possible_mvps[rand(0, getarraysize(.faceworm_possible_mvps) - 1)], 1, "itest::On_faceworm_mvp_killed");
