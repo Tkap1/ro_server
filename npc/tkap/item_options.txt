@@ -161,7 +161,7 @@ on_talk:
 		
 		// Build the Menu.
 		setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
-		.@menu$ = sprintf("Last choice [%s]:", .@positions$[last_enchant_choice]);
+		.@menu$ = sprintf("Last choice [%s]:", .@position$[last_enchant_choice]);
 		for (.@i = 1; .@i <= 10; ++.@i)
 		{
 			if(getequipisequiped(.@i))
