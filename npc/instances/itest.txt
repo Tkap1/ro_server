@@ -261,7 +261,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					disablenpc instance_npcname("izd01-1", .@instance);
 					disablenpc instance_npcname("izd02", .@instance);
 					
-					.faceworm_dark_start = 50;
+					.faceworm_dark_start = 25;
 					.faceworm_dark_killed = 0;
 					.faceworm_mvps_killed = 0;
 					.faceworm_spawned_mvps = false;
@@ -274,15 +274,15 @@ prontera,169,199,3	script	itest	PORTAL,{
 					if(.faceworm_difficulty == .EASY)
 					{
 						.faceworm_mvps_to_spawn = 1;
-						.faceworm_reward_min = 10;
-						.faceworm_reward_min = 20;
+						.faceworm_reward_min = 30;
+						.faceworm_reward_min = 60;
 					}
 					
 					if(.faceworm_difficulty == .MEDIUM)
 					{
 						.faceworm_mvps_to_spawn = 2;
-						.faceworm_reward_min = 20;
-						.faceworm_reward_min = 40;
+						.faceworm_reward_min = 60;
+						.faceworm_reward_min = 120;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
@@ -309,8 +309,8 @@ prontera,169,199,3	script	itest	PORTAL,{
 					if(.faceworm_difficulty == .HARD)
 					{
 						.faceworm_mvps_to_spawn = 3;
-						.faceworm_reward_min = 40;
-						.faceworm_reward_min = 60;
+						.faceworm_reward_min = 120;
+						.faceworm_reward_min = 240;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
