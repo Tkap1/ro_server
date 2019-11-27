@@ -275,14 +275,14 @@ prontera,169,199,3	script	itest	PORTAL,{
 					{
 						.faceworm_mvps_to_spawn = 1;
 						.faceworm_reward_min = 30;
-						.faceworm_reward_min = 60;
+						.faceworm_reward_max = 60;
 					}
 					
 					if(.faceworm_difficulty == .MEDIUM)
 					{
 						.faceworm_mvps_to_spawn = 2;
 						.faceworm_reward_min = 60;
-						.faceworm_reward_min = 120;
+						.faceworm_reward_max = 120;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
@@ -310,7 +310,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					{
 						.faceworm_mvps_to_spawn = 3;
 						.faceworm_reward_min = 120;
-						.faceworm_reward_min = 240;
+						.faceworm_reward_max = 240;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
