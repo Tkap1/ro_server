@@ -27,6 +27,7 @@ OnInit:
 	18564,
 	18603,
 	18611,
+	18754,	// Blood sucker
 	18813,
 	18908,	// Isabella Red Ear
 	19020,  // Survive_Circlet
