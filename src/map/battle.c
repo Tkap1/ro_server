@@ -500,7 +500,8 @@ static int64 battle_calc_weapon_damage(struct block_list *src, struct block_list
 		struct status_data *tstatus;
 		tstatus = status->get_status_data(bl);
 		eatk += damage * 0x19 * battle->attr_fix_table[tstatus->ele_lv - 1][ELE_POISON][tstatus->def_ele] / 10000;
-		damage += (eatk + damage) * sc->data[SC_EDP]->val3 / 100 + eatk;
+		// damage += (eatk + damage) * sc->data[SC_EDP]->val3 / 100 + eatk;
+		damage += (eatk + damage) * (sc->data[SC_EDP]->val3 * 50 / 100) / 100 + eatk; // Tkap: Nerfing EDP since it doesnt need poison bottles
 	} else /* fall through */
 #endif
 	damage += eatk;
