@@ -458,8 +458,8 @@ prontera,169,199,3	script	itest	PORTAL,{
 							for(.@j = 0; .@j < getarraysize(.orc_reward_ids); .@j++)
 							{
 								@temp_reward_id = .orc_reward_ids[.@j];
-								@temp_reward_min = .orc_reward_min[.@j];
-								@temp_reward_max = .orc_reward_max[.@j];
+								@temp_reward_min = .orc_reward_min[.@j] * .orc_reward_multiplier;
+								@temp_reward_max = .orc_reward_max[.@j] * .orc_reward_multiplier;
 								if(.@died)
 								{
 									@temp_reward_min /= 2;
@@ -481,8 +481,8 @@ prontera,169,199,3	script	itest	PORTAL,{
 				for(.@j = 0; .@j < getarraysize(.orc_reward_ids); .@j++)
 				{
 					@temp_reward_id = .orc_reward_ids[.@j];
-					@temp_reward_min = .orc_reward_min[.@j];
-					@temp_reward_max = .orc_reward_max[.@j];
+					@temp_reward_min = .orc_reward_min[.@j] * .orc_reward_multiplier;
+					@temp_reward_max = .orc_reward_max[.@j] * .orc_reward_multiplier;
 					if(.player_died)
 					{
 						@temp_reward_min /= 2;
