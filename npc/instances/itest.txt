@@ -396,7 +396,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 	
 	// =============== EVENTS ==================
 	On_itest_kill:
-	
+		
 		.orc_total_mobs -= 1;
 		if(!.orc_spawned_mvps)
 		{
@@ -420,7 +420,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 	
 	On_MVP_killed:
 		.orc_mvps_killed += 1;
-		if(.orc_mvps_killed == .orc_mvps_to_spawn)
+		if(.orc_mvps_killed >= .orc_mvps_to_spawn)
 		{
 			announce("All MVPs have been killed!", bc_blue|bc_map);
 			getpartymember(getcharid(CHAR_ID_PARTY), 0);
@@ -468,10 +468,6 @@ prontera,169,199,3	script	itest	PORTAL,{
 								@roll_amount = rand(@temp_reward_min, @temp_reward_max);
 								if(@roll_amount > 0) { getitem(@temp_reward_id, @roll_amount, @account_ids[.@i]); }
 							}
-							
-							// if(.@died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
-							// else { .@amount = rand(.crystals_min, .crystals_max); }
-							// if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
 						}
 					}
 				}
@@ -491,9 +487,6 @@ prontera,169,199,3	script	itest	PORTAL,{
 					@roll_amount = rand(@temp_reward_min, @temp_reward_max);
 					if(@roll_amount > 0) { getitem(@temp_reward_id, @roll_amount, @account_ids[.@i]); }
 				}
-				// if(player_died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
-				// else { .@amount = rand(.crystals_min, .crystals_max); }
-				// if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
 			}
 		}
 	end;

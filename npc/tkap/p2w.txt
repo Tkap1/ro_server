@@ -27,13 +27,14 @@ OnInit:
 	18603,
 	18611,
 	18813,
-	19020, // faltan combos - Survive_Circlet
-	19139, // faltan combos - Survivors_Orb
+	18908,	// Isabella Red Ear
+	19020,  // Survive_Circlet
+	19139,	// Survivor's Orb
 	20783,
 	20799,
-	20813, // faltan combos - Clack_Of_Servival_
+	20813, // Cloak of Survival
 	22138,
-	22170, // faltan combos - Survivors_Shoes
+	22170, // Survival Shoes
 	28377,
 	28507,
 	28910
