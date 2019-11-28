@@ -31,6 +31,22 @@ prontera,169,199,3	script	itest	PORTAL,{
 		"1@iz_dun00"
 		);
 		
+		setarray(.orc_reward_ids[0],
+		Temporal_Crystal,
+		Coagulated_Spell
+		);
+		
+		setarray(.orc_reward_min[0],
+		,
+		1,	// Temporal_Crystal,
+		3	// Coagulated_Spell
+		);
+		
+		setarray(.orc_reward_max[0],
+		2,	// Temporal_Crystal,
+		6	// Coagulated_Spell
+		);
+		
 		.id_faceworm = 2528;
 		.id_faceworm_queen = 2529;
 		.id_dark_faceworm = 2530;
@@ -116,15 +132,13 @@ prontera,169,199,3	script	itest	PORTAL,{
 					if(.orc_difficulty == .EASY)
 					{
 						.orc_mvps_to_spawn = 3;
-						.crystals_min = 1;
-						.crystals_max = 2;
+						.orc_reward_multiplier = 1;
 					}
 					
 					if(.orc_difficulty == .MEDIUM)
 					{
 						.orc_mvps_to_spawn = 4;
-						.crystals_min = 2;
-						.crystals_max = 4;
+						.orc_reward_multiplier = 2;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
@@ -151,8 +165,7 @@ prontera,169,199,3	script	itest	PORTAL,{
 					if(.orc_difficulty == .HARD)
 					{
 						.orc_mvps_to_spawn = 5;
-						.crystals_min = 4;
-						.crystals_max = 6;
+						.orc_reward_multiplier = 3;
 						freeloop(true);
 						.@count = getunits(BL_MOB, .@units, false, .instance_names$[.@instance_choice - 1]);
 						for(.@i = 0; .@i < .@count; .@i++)
@@ -443,18 +456,45 @@ prontera,169,199,3	script	itest	PORTAL,{
 						{
 							.@died = getvariableofpc(player_died, @account_ids[.@i]);
 							
-							if(.@died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
-							else { .@amount = rand(.crystals_min, .crystals_max); }
-							if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
+							for(.@j = 0; .@j < getarraysize(.orc_reward_ids); .@j++)
+							{
+								@temp_reward_id = .orc_reward_ids[.@j];
+								@temp_reward_min = .orc_reward_min[.@j];
+								@temp_reward_max = .orc_reward_max[.@j];
+								if(.@died)
+								{
+									@temp_reward_min /= 2;
+									@temp_reward_max /= 2;
+								}
+								@roll_amount = rand(@temp_reward_min, @temp_reward_max);
+								if(@roll_amount > 0) { getitem(@temp_reward_id, @roll_amount, @account_ids[.@i]); }
+							}
+							
+							// if(.@died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
+							// else { .@amount = rand(.crystals_min, .crystals_max); }
+							// if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
 						}
 					}
 				}
 			}
 			else
 			{
-				if(player_died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
-				else { .@amount = rand(.crystals_min, .crystals_max); }
-				if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
+				for(.@j = 0; .@j < getarraysize(.orc_reward_ids); .@j++)
+				{
+					@temp_reward_id = .orc_reward_ids[.@j];
+					@temp_reward_min = .orc_reward_min[.@j];
+					@temp_reward_max = .orc_reward_max[.@j];
+					if(.player_died)
+					{
+						@temp_reward_min /= 2;
+						@temp_reward_max /= 2;
+					}
+					@roll_amount = rand(@temp_reward_min, @temp_reward_max);
+					if(@roll_amount > 0) { getitem(@temp_reward_id, @roll_amount, @account_ids[.@i]); }
+				}
+				// if(player_died) { .@amount = rand(.crystals_min / 2, .crystals_max / 2); }
+				// else { .@amount = rand(.crystals_min, .crystals_max); }
+				// if(.@amount > 0) { getitem(Temporal_Crystal, .@amount, @account_ids[.@i]); }
 			}
 		}
 	end;
