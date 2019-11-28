@@ -37,7 +37,6 @@ prontera,169,199,3	script	itest	PORTAL,{
 		);
 		
 		setarray(.orc_reward_min[0],
-		,
 		1,	// Temporal_Crystal,
 		3	// Coagulated_Spell
 		);
