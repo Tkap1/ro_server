@@ -55,6 +55,11 @@
 				sc_start SC_FOOD_INT,.buff_duration,.@food_value;
 				sc_start SC_FOOD_DEX,.buff_duration,.@food_value;
 				sc_start SC_FOOD_LUK,.buff_duration,.@food_value;
+				
+				if(.@food_value >= 10)
+				{
+					sc_start SC_EXTRACT_SALAMINE_JUICE, 3600000, 10; // Enrich Celermine Juice (10% ASPD?)
+				}
 				break;
 			}
 		}
@@ -86,6 +91,10 @@
 	{
 		dispbottom "Your kill score is: " + player_kill_score;
 		dispbottom "You got " + .@food_value + " to all stats!";
+		if(.@food_value >= 10)
+		{
+			dispbottom "You got the effect of Enrich Celermine Juice (+10% ASPD)";
+		}
 	}
 
 	end;
