@@ -1,5 +1,5 @@
 
-prontera,148,173,4	script	Advanced Exchanger	4_M_DWARF,{
+prontera,148,167,4	script	Advanced Exchanger	4_M_DWARF,{
 	callsub(on_talk);
 	end;
 	
