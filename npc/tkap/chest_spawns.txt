@@ -1,4 +1,7 @@
-
+// function	script	foo	{
+// 	setarray($@nums[0],1,2,3,4);
+// 	return;
+// }
 
 -	script	chest_spawns	FAKE_NPC,1,1,{
 	
@@ -66,12 +69,12 @@ OnInit:
 	);
 	
 	setarray(.materials_chance_multiplier[0],
-	50,	// Rough oridecon
-	50,	// Rough elunium
-	10,	// Oridecon
-	10,	// Elunium
-	5,	// Carnium
-	5	// Bradium
+	25,	// Rough oridecon
+	25,	// Rough elunium
+	5,	// Oridecon
+	5,	// Elunium
+	3,	// Carnium
+	3	// Bradium
 	);
 	
 	.chance = 10000000;
@@ -83,7 +86,6 @@ OnInit:
 end;
 
 OnNPCKillEvent:
-	
 	
 	.@mob_hp = getunitdata(killedgid, UDT_MAXHP);
 	
@@ -127,7 +129,8 @@ OnNPCKillEvent:
 	
 	// Chest spawn roll
 	.@temp_chance = .@mob_hp * .chest_chance_multiplier;
-	if(rand(1, .chance) <= .@temp_chance)
+	// if(rand(1, .chance) <= .@temp_chance)
+	while((.@temp_chance -= rand(1, .chance)) >= 0)
 	{
 		.@mob_to_spawn_id = .ids[rand(0, getarraysize(.ids) - 1)];
 		.@mob_to_spawn_name$ = getmonsterinfo(.@mob_to_spawn_id, MOB_NAME);
@@ -139,7 +142,13 @@ OnNPCKillEvent:
 	for(.@i = 0; .@i < getarraysize(.materials); .@i++)
 	{
 		.@temp_chance = .@mob_hp * .materials_chance_multiplier[.@i];
-		if(rand(1, .chance) <= .@temp_chance)
+		.@item_count = 0;
+		// if(rand(1, .chance) <= .@temp_chance)
+		while((.@temp_chance -= rand(1, .chance)) >= 0)
+		{
+			.@item_count += 1;
+		}
+		if(.@item_count)
 		{
 			if(@is_on_party)
 			{
@@ -158,18 +167,24 @@ OnNPCKillEvent:
 					}
 				}
 				// Give the item to a random one candidate
-				getitem(.materials[.@i], 1, @ids_to_share_items_with[rand(0, @candidate_count - 1)]);
+				getitem(.materials[.@i], .@item_count, @ids_to_share_items_with[rand(0, @candidate_count - 1)]);
 			}
 			else
 			{
-				getitem(.materials[.@i], 1);
+				getitem(.materials[.@i], .@item_count);
 			}
 		}
 	}
 	
 	// P2W coins roll
 	.@temp_chance = .@mob_hp * .p2w_chance_multiplier;
-	if(rand(1, .chance) <= .@temp_chance)
+	.@item_count = 0;
+	// if(rand(1, .chance) <= .@temp_chance)
+	while((.@temp_chance -= rand(1, .chance)) >= 0)
+	{
+		.@item_count += 1;
+	}
+	if(.@item_count)
 	{
 		if(@is_on_party)
 		{
@@ -188,17 +203,23 @@ OnNPCKillEvent:
 				}
 			}
 			// Give the item to a random one candidate
-			getitem(30000, 1, @ids_to_share_items_with[rand(0, @candidate_count - 1)]);
+			getitem(30000, .@item_count, @ids_to_share_items_with[rand(0, @candidate_count - 1)]);
 		}
 		else
 		{
-			getitem(30000, 1);
+			getitem(30000, .@item_count);
 		}
 	}
 	
 	// Akuma's mora coins xq llora
 	.@temp_chance = .@mob_hp * .mora_coin_multiplier;
-	if(rand(1, .chance) <= .@temp_chance)
+	.@item_count = 0;
+	// if(rand(1, .chance) <= .@temp_chance)
+	while((.@temp_chance -= rand(1, .chance)) >= 0)
+	{
+		.@item_count += 1;
+	}
+	if(.@item_count)
 	{
 		if(@is_on_party)
 		{
@@ -217,17 +238,23 @@ OnNPCKillEvent:
 				}
 			}
 			// Give the item to a random one candidate
-			getitem(6380, 1, @ids_to_share_items_with[rand(0, @candidate_count - 1)]);
+			getitem(6380, .@item_count, @ids_to_share_items_with[rand(0, @candidate_count - 1)]);
 		}
 		else
 		{
-			getitem(6380, 1);
+			getitem(6380, .@item_count);
 		}
 	}
 	
 	// Oso bloody branches xq llora
 	.@temp_chance = .@mob_hp / .bloody_branch_divisor;
-	if(rand(1, .chance) <= .@temp_chance)
+	.@item_count = 0;
+	// if(rand(1, .chance) <= .@temp_chance)
+	while((.@temp_chance -= rand(1, .chance)) >= 0)
+	{
+		.@item_count += 1;
+	}
+	if(.@item_count)
 	{
 		if(@is_on_party)
 		{
@@ -247,13 +274,13 @@ OnNPCKillEvent:
 			}
 			// Give the item to a random one candidate
 			@temp_roll = rand(0, @candidate_count - 1);
-			getitem(12103, 1, @ids_to_share_items_with[@temp_roll]);
-			announce("Hey, "+ strcharinfo(PC_NAME, "NULL", @ids_to_share_items_with[@temp_roll])+" just got a Bloody Branch!", bc_blue|bc_all);
+			getitem(12103, .@item_count, @ids_to_share_items_with[@temp_roll]);
+			announce(sprintf("Hey, %s just got %d Bloody Branch!", strcharinfo(PC_NAME, "NULL", @ids_to_share_items_with[@temp_roll]), .@item_count), bc_blue|bc_all);
 		}
 		else
 		{
-			getitem(12103, 1);
-			announce("Hey, "+strcharinfo(PC_NAME)+" just got a Bloody Branch!", bc_blue|bc_all);
+			getitem(12103, .@item_count);
+			announce(sprintf("Hey, %s just got %d Bloody Branch!", strcharinfo(PC_NAME), .@item_count), bc_blue|bc_all);
 		}
 	}
 	
