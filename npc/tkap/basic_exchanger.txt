@@ -14,18 +14,24 @@ end;
 	
 on_talk:
 	
-	if((.@rough_oridecon_count = countitem(.rough_oridecon_id)) >= 5) // Rough oridecon
+	if((.@rough_oridecon_count = countitem(.rough_oridecon_id)) >= 6) // Rough oridecon
 	{
 		.@exchanges = .@rough_oridecon_count / 5;
-		delitem(.rough_oridecon_id, .@exchanges * 5);
-		getitem(.oridecon_id, .@exchanges);
+		if((.@exchanges - 1))
+		{
+			delitem(.rough_oridecon_id, .@exchanges * 5);
+			getitem(.oridecon_id, .@exchanges);
+		}
 	}
 	
-	if((.@rough_elunium_id = countitem(.rough_elunium_id)) >= 5) // Rough elunium
+	if((.@rough_elunium_id = countitem(.rough_elunium_id)) >= 6) // Rough elunium
 	{
 		.@exchanges = .@rough_elunium_id / 5;
-		delitem(.rough_elunium_id, .@exchanges * 5);
-		getitem(.elunium_id, .@exchanges);
+		if((.@exchanges - 1))
+		{
+			delitem(.rough_elunium_id, .@exchanges * 5);
+			getitem(.elunium_id, .@exchanges);
+		}
 	}
 	
 end;

@@ -14,18 +14,24 @@ end;
 	
 on_talk:
 	
-	if((.@oridecon_count = countitem(.oridecon_id)) >= 5) // Oridecon for bradium exchange
+	if((.@oridecon_count = countitem(.oridecon_id)) >= 6) // Oridecon for bradium exchange
 	{
 		.@exchanges = .@oridecon_count / 5;
-		delitem(.oridecon_id, .@exchanges * 5);
-		getitem(.bradium_id, .@exchanges);
+		if((.@exchanges - 1))
+		{
+			delitem(.oridecon_id, .@exchanges * 5);
+			getitem(.bradium_id, .@exchanges);
+		}
 	}
 	
-	if((.@elunium_count = countitem(.elunium_id)) >= 5) // Elunium for carnium exchange
+	if((.@elunium_count = countitem(.elunium_id)) >= 6) // Elunium for carnium exchange
 	{
 		.@exchanges = .@elunium_count / 5;
-		delitem(.elunium_id, .@exchanges * 5);
-		getitem(.carnium_id, .@exchanges);
+		if((.@exchanges - 1))
+		{
+			delitem(.elunium_id, .@exchanges * 5);
+			getitem(.carnium_id, .@exchanges);
+		}
 	}
 	
 end;
