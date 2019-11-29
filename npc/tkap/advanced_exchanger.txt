@@ -17,7 +17,7 @@ on_talk:
 	if((.@oridecon_count = countitem(.oridecon_id)) >= 6) // Oridecon for bradium exchange
 	{
 		.@exchanges = .@oridecon_count / 5;
-		if((.@exchanges - 1))
+		if((.@exchanges -= 1))
 		{
 			delitem(.oridecon_id, .@exchanges * 5);
 			getitem(.bradium_id, .@exchanges);
@@ -27,7 +27,7 @@ on_talk:
 	if((.@elunium_count = countitem(.elunium_id)) >= 6) // Elunium for carnium exchange
 	{
 		.@exchanges = .@elunium_count / 5;
-		if((.@exchanges - 1))
+		if((.@exchanges -= 1))
 		{
 			delitem(.elunium_id, .@exchanges * 5);
 			getitem(.carnium_id, .@exchanges);
