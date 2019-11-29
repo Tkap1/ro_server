@@ -126,7 +126,7 @@ OnNPCKillEvent:
 		}
 	}
 	
-	
+	freeloop(true);
 	// Chest spawn roll
 	.@temp_chance = .@mob_hp * .chest_chance_multiplier;
 	// if(rand(1, .chance) <= .@temp_chance)
@@ -283,6 +283,7 @@ OnNPCKillEvent:
 			announce(sprintf("Hey, %s just got %d Bloody Branch!", strcharinfo(PC_NAME), .@item_count), bc_blue|bc_all);
 		}
 	}
+	freeloop(false);
 	
 end;
 
