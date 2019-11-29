@@ -29,6 +29,7 @@ OnInit:
 	18611,
 	18666,	// CD in mouth
 	18754,	// Blood sucker
+	18793,	// Sorc Night Cap
 	18813,
 	18908,	// Isabella Red Ear
 	19020,  // Survive_Circlet
