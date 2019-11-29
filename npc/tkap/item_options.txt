@@ -292,7 +292,6 @@ on_talk:
 					.@increment = .stat_increments[.@option_array_index];
 					.@chance = 10000;
 					
-					// Infinite loop somehow, debug
 					while(true)
 					{
 						.@chance = .@chance - (.@chance * .@decrement / 100);
