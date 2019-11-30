@@ -42,6 +42,7 @@ OnInit:
 	28377,
 	28502,	// Mob Scarf
 	28507,
+	28565,	// Perverse Demon Mask
 	28910
 	);
 	
