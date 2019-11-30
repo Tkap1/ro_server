@@ -4655,7 +4655,12 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 	}
 
 	//Check for critical
-	if( !flag.cri && wd.type != BDT_MULTIHIT && sstatus->cri &&
+	// if( !flag.cri && wd.type != BDT_MULTIHIT && sstatus->cri &&
+	// 	(!skill_id ||
+	// 	skill_id == KN_AUTOCOUNTER ||
+	// 	skill_id == SN_SHARPSHOOTING || skill_id == MA_SHARPSHOOTING ||
+	// 	skill_id == NJ_KIRIKAGE))
+	if( !flag.cri && sstatus->cri && // Tkap: Messing with crit
 		(!skill_id ||
 		skill_id == KN_AUTOCOUNTER ||
 		skill_id == SN_SHARPSHOOTING || skill_id == MA_SHARPSHOOTING ||
