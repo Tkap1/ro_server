@@ -36,10 +36,11 @@ OnInit:
 	19139,	// Survivor's Orb
 	20783,
 	20799,
-	20813, // Cloak of Survival
+	20813,	// Cloak of Survival
 	22138,
-	22170, // Survival Shoes
+	22170,	// Survival Shoes
 	28377,
+	28502,	// Mob Scarf
 	28507,
 	28910
 	);
