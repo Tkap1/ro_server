@@ -8,7 +8,8 @@ OnInit:
 	.reroll_price = 500000;
 	.reroll_values_price = 2000000;
 	
-	setarray(.options$[1],
+	// These are being accessed as if they were 1 indexed
+	setarray(.options$[0],
 	"Max HP",
 	"Max SP",
 	"STR",
@@ -34,7 +35,7 @@ OnInit:
 	"VCT %",
 	"ACD %");
 	
-	setarray(.option_constants[1],
+	setarray(.option_constants[0],
 	VAR_MAXHPAMOUNT,
 	VAR_MAXSPAMOUNT,
 	VAR_STRAMOUNT,
@@ -60,7 +61,7 @@ OnInit:
 	DEC_SPELL_CAST_TIME,
 	DEC_SPELL_DELAY_TIME);
 	
-	setarray(.start_values[1],
+	setarray(.start_values[0],
 	100,	// Max HP
 	100,	// Max SP
 	1,		// STR
@@ -87,7 +88,7 @@ OnInit:
 	3);		// After cast delay
 	
 	// Tkap: Treated as percentages
-	setarray(.decrements[1],
+	setarray(.decrements[0],
 	1,	// Max HP
 	1,	// Max SP
 	30,		// STR
@@ -113,7 +114,7 @@ OnInit:
 	40,		// VCT
 	40);		// After cast delay
 	
-	setarray(.stat_increments[1],
+	setarray(.stat_increments[0],
 	10,	// Max HP
 	10,	// Max SP
 	1,		// STR
@@ -149,7 +150,7 @@ on_talk:
 	disable_items();
 	mes(.npc_name$);
 	mes("What do you want?");
-	.@choice = select("Enchant:Re-roll:Re-roll values");
+	.@choice = select("Enchant:Re-roll:Re-roll values:Targeted Re-roll");
 	
 	if(.@choice == 1)
 	{
@@ -196,20 +197,19 @@ on_talk:
 		.@at_least_one_option = 0;
 		.@result_str$ = "";
 		
-		for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
+		for (.@i = 0; .@i < MAX_ITEM_OPTIONS; ++.@i)
 		{
-			.@opt = getequipoption(.@equip_index, .@i, IT_OPT_INDEX);
+			.@opt = getequipoption(.@equip_index, .@i + 1, IT_OPT_INDEX);
 			if(.@opt <= 0)
 			{
 				.@at_least_one_option = 1;
-				.@option_array_index = rand(1, getarraysize(.options$) - 1);
+				.@option_array_index = rand(0, getarraysize(.options$) - 1);
 				.@option_index = .option_constants[.@option_array_index];
 				.@value = .start_values[.@option_array_index];
 				.@decrement = .decrements[.@option_array_index];
 				.@increment = .stat_increments[.@option_array_index];
 				.@chance = 10000;
 				
-				// Infinite loop somehow, debug
 				while(true)
 				{
 					.@chance = .@chance - (.@chance * .@decrement / 100);
@@ -221,7 +221,7 @@ on_talk:
 					}
 					.@value = .@value + .@increment;
 				}
-				setequipoption(.@equip_index, .@i, .@option_index, .@value);
+				setequipoption(.@equip_index, .@i + 1, .@option_index, .@value);
 			}
 		}
 		
@@ -283,9 +283,9 @@ on_talk:
 			{
 				Zeny -= .reroll_price;
 				.@result_str$ = "";
-				for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
+				for (.@i = 0; .@i < MAX_ITEM_OPTIONS; ++.@i)
 				{
-					.@option_array_index = rand(1, getarraysize(.options$) - 1);
+					.@option_array_index = rand(0, getarraysize(.options$) - 1);
 					.@option_index = .option_constants[.@option_array_index];
 					.@value = .start_values[.@option_array_index];
 					.@decrement = .decrements[.@option_array_index];
@@ -303,7 +303,7 @@ on_talk:
 						}
 						.@value = .@value + .@increment;
 					}
-					setequipoption(.@equip_index, .@i, .@option_index, .@value);
+					setequipoption(.@equip_index, .@i + 1, .@option_index, .@value);
 				}
 				mesclear();
 				mes(.@result_str$);
@@ -366,17 +366,17 @@ on_talk:
 			{
 				Zeny -= .reroll_values_price;
 				.@result_str$ = "";
-				for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i)
+				for (.@i = 0; .@i < MAX_ITEM_OPTIONS; ++.@i)
 				{
-					.@current_option = getequipoption(.@equip_index, .@i, IT_OPT_INDEX);
+					.@current_option = getequipoption(.@equip_index, .@i + 1, IT_OPT_INDEX);
 					
 					// Find the index in our array of the option that is already here.
-					for (.@j = 1; .@j < getarraysize(.option_constants); ++.@j)
+					for (.@j = 0; .@j < getarraysize(.option_constants); ++.@j)
 					{
 						.@temp_option = .option_constants[.@j];
 						if(.@temp_option == .@current_option)
 						{
-							.@old_value = getequipoption(.@equip_index, .@i, IT_OPT_VALUE);
+							.@old_value = getequipoption(.@equip_index, .@i + 1, IT_OPT_VALUE);
 							.@decrement = .decrements[.@j];
 							.@increment = .stat_increments[.@j];
 							.@value = .start_values[.@j];
@@ -393,7 +393,7 @@ on_talk:
 								}
 								.@value = .@value + .@increment;
 							}
-							setequipoption(.@equip_index, .@i, .@current_option, .@value);
+							setequipoption(.@equip_index, .@i + 1, .@current_option, .@value);
 							break;
 						}
 					}
@@ -413,5 +413,256 @@ on_talk:
 		mesclear();
 		mes("Okay, bye!");
 		close();
+	}
+	
+	// Targeted re-roll
+	else if(.@choice == 4)
+	{
+		// Build the Menu.
+		setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
+		.@menu$ = "";
+		for (.@i = 1; .@i <= 10; ++.@i)
+		{
+			if(getequipisequiped(.@i))
+			{
+				.@menu$ += "[" + .@position$[.@i] + "] - " + getequipname(.@i) + ":";
+			}
+			else
+			{
+				.@menu$ += "^ff0000[" + .@position$[.@i] + "] - " + "Empty" + "^000000:";
+			}
+		}
+		
+		// Select the part.
+		.@equip_index = select(.@menu$);
+		
+		// Check if it's worn.
+		if (!getequipisequiped(.@equip_index)) {
+			mes("Brah, your item ain't equipped.");
+			close();
+		// Check if it allows options
+		} else if (!getequipisenableopt(.@equip_index)) {
+			mes("Brah, this equip can't have options.");
+			close();
+		// Check if equipment is identified.
+		} else if (!getequipisidentify(.@equip_index)) {
+			mes("Brah, this equip ain't identified.");
+			close();
+		}
+		
+		setarray(.@slots[0], -1, -1, -1, -1, -1);
+		
+		while(true)
+		{
+			.@slot_selection$ = "";
+			for(.@i = 0; .@i < 5; .@i++)
+			{
+				if(.@slots[.@i] == -1)
+				{
+					.@slot_selection$ += sprintf("Slot %d:", .@i + 1);
+				}
+				else
+				{
+					.@slot_selection$ += sprintf("^00aa00%s^000000:", .options$[.@slots[.@i]]);
+				}
+			}
+			.@slot_selection$ += "^ff0000Start^000000";
+			.@slot_choice = select(.@slot_selection$);
+			
+			if(.@slot_choice == 6)
+			{
+				mesclear();
+				mes(.npc_name$);
+				mes("Select the maximum zeny to use\nUse 0 for no limit");
+				input(.@max_zeny_to_use);
+				
+				// Check if at least one thing is selected
+				.@at_least_one_option_selected = false;
+				for(.@i = 0; .@i < 5; .@i++)
+				{
+					if(.@slots[.@i] != -1)
+					{
+						.@at_least_one_option_selected = true;
+						break;
+					}
+				}
+				if(!.@at_least_one_option_selected)
+				{
+					mes("Select something first!");
+					next();
+					mesclear();
+				}
+				else
+				{
+					
+					// Check if we have what we wanted
+					setarray(.@options_done[0], false, false, false, false, false);
+					setarray(.@options_matched[0], false, false, false, false, false);
+					for(.@i = 0; .@i < 5; .@i++)
+					{
+						if(.@slots[.@i] == -1)
+						{
+							.@options_done[.@i] = true;
+						}
+					}
+					
+					for(.@i = 0; .@i < 5; .@i++)
+					{
+						if(!.@options_done[.@i])
+						{
+							.@what_we_want = .option_constants[.@slots[.@i]];
+							for(.@j = 0; .@j < 5; .@j++)
+							{
+								if(!.@options_matched[.@j])
+								{
+									.@what_we_have = getequipoption(.@equip_index, .@j + 1, IT_OPT_INDEX);
+									if(.@what_we_have == .@what_we_want)
+									{
+										.@options_done[.@i] = true;
+										.@options_matched[.@j] = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+					
+					.@we_got_it = true;
+					for(.@i = 0; .@i < 5; .@i++)
+					{
+						if(!.@options_done[.@i]) { .@we_got_it = false; break;}
+					}
+					
+					if(.@we_got_it)
+					{
+						mesclear();
+						mes(.npc_name$);
+						mes("That item already has all of that!");
+						close();
+					}
+					
+					.@result_str$ = "";
+					.@zeny_used = 0;
+					
+					freeloop(true);
+					while(true)
+					{
+						// Check if we have enough zeny
+						if(Zeny < .reroll_price)
+						{
+							mesclear();
+							mes(.npc_name$);
+							mes("You don't have enough zeny!");
+							close();
+						}
+						
+						if(.@max_zeny_to_use && .@zeny_used >= .@max_zeny_to_use)
+						{
+							mesclear();
+							mes(.npc_name$);
+							mesf("I used the %d zeny and didn't get it, sorry!", .@max_zeny_to_use);
+							close();
+						}
+						
+						Zeny -= .reroll_price;
+						.@zeny_used += .reroll_price;
+						
+						setarray(.@all_we_got[0],
+						rand(0, getarraysize(.option_constants) - 1),
+						rand(0, getarraysize(.option_constants) - 1),
+						rand(0, getarraysize(.option_constants) - 1),
+						rand(0, getarraysize(.option_constants) - 1),
+						rand(0, getarraysize(.option_constants) - 1)
+						);
+						setarray(.@options_done[0], false, false, false, false, false);
+						setarray(.@options_matched[0], false, false, false, false, false);
+						
+						for(.@i = 0; .@i < 5; .@i++)
+						{
+							if(.@slots[.@i] == -1)
+							{
+								.@options_done[.@i] = true;
+							}
+						}
+						
+						for(.@i = 0; .@i < 5; .@i++)
+						{
+							if(!.@options_done[.@i])
+							{
+								.@what_we_want = .option_constants[.@slots[.@i]];
+								for(.@j = 0; .@j < 5; .@j++)
+								{
+									if(!.@options_matched[.@j])
+									{
+										.@what_we_have = .option_constants[.@all_we_got[.@j]];
+										if(.@what_we_have == .@what_we_want)
+										{
+											.@options_done[.@i] = true;
+											.@options_matched[.@j] = true;
+											break;
+										}
+									}
+								}
+							}
+						}
+						
+						.@we_got_it = true;
+						for(.@i = 0; .@i < 5; .@i++)
+						{
+							if(!.@options_done[.@i]) { .@we_got_it = false; break;}
+						}
+						
+						if(.@we_got_it)
+						{
+							.@result_str$ = "";
+							for (.@i = 0; .@i < MAX_ITEM_OPTIONS; ++.@i)
+							{
+								.@option_array_index = .@all_we_got[.@i];
+								.@option_index = .option_constants[.@option_array_index];
+								.@value = .start_values[.@option_array_index];
+								.@decrement = .decrements[.@option_array_index];
+								.@increment = .stat_increments[.@option_array_index];
+								.@chance = 10000;
+								
+								while(true)
+								{
+									.@chance = .@chance - (.@chance * .@decrement / 100);
+									
+									if(rand(1, 10000) > .@chance)
+									{
+										.@result_str$ += "You got +" + .@value + " " + .options$[.@option_array_index] + "\n";
+										break;
+									}
+									.@value = .@value + .@increment;
+								}
+								setequipoption(.@equip_index, .@i + 1, .@option_index, .@value);
+							}
+							mesclear();
+							mes(.npc_name$);
+							mesf("There you go!\nTotal cost: %d zeny\n%s", .@zeny_used, .@result_str$);
+							close();
+						}
+					}
+					freeloop(false);
+				}
+			}
+			else
+			{
+				// List all options
+				.@option_select_menu$ = "";
+				for(.@i = 0; .@i < getarraysize(.options$); .@i++)
+				{
+					.@option_select_menu$ += .options$[.@i] + ":";
+				}
+				.@option_select_menu$ += "^ff0000Cancel^000000";
+				.@option_selected = select(.@option_select_menu$);
+				
+				if(!(.@option_selected == getarraysize(.options$) + 1))
+				{
+					// We hit an option instead of cancel
+					.@slots[.@slot_choice - 1] = .@option_selected - 1;
+				}
+			}
+		}
 	}
 }
