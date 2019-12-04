@@ -1,0 +1,38 @@
+// Bloody Branch Summonable Monsters Database
+//
+// Structure of Database:
+// MobID,DummyName,Rate
+
+0,Baphomet,1039
+2131,Wandering Purple Dragon,1000000
+1087,Orc Hero,1000000
+2194,Giant Octopus,1000000
+1929,Unsealed Baphomet,1000000
+3181,Captain Ferlock,1000000
+2319,Buwaya,1000000
+3124,Charleston 3,1000000
+// 2942,Evil Believer,1000000
+2564,Fenris Fenrir,1000000
+2996,Celine Kimi,1000000				
+2959,Torturous Redeemer,1000000
+3029,Reaper Yanku,1000000					
+3254,T_W_O,1000000					
+3000,Morroc Necromancer,1000000
+3073,Awakened Ferre,1000000			
+2475,Corruption Root,1000000
+2476,Amdarais,1000000
+2542,Doyen Irene,1000000
+3097,Morroc the Desperate God,1000000
+3450,Bijou,1000000					
+3628,Heart Hunter Ebel,1000000		
+3621,Pet Child,1000000				
+3473,Stefan.J.E.Wolf,1000000		
+2322,Enraged Bakonawa,1000000
+2317,Bangungot,1000000
+2529,Faceworm Queen,1000000
+2532,Faceworm Queen (Red),1000000
+2533,Faceworm Queen (Green),1000000
+2534,Faceworm Queen (Blue),1000000
+2535,Faceworm Queen (Yellow),1000000
+1956,Naght Sieger,1000000
+1957,Entweihen Crothen,1000000

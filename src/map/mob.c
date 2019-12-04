@@ -5101,6 +5101,7 @@ static int mob_read_randommonster(void)
 		DBPATH"mob_branch.txt",
 		DBPATH"mob_poring.txt",
 		DBPATH"mob_boss.txt",
+		DBPATH"tkap_mob_boss.txt", // Tkap: Added this for random instance MVP spawns
 		"mob_pouch.txt",
 		"mob_classchange.txt"};
 
