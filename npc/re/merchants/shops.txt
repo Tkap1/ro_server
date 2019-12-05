@@ -467,6 +467,7 @@ OnInit:
 	sellitem Wing_Of_Butterfly;
 	sellitem Booby_Trap;
 	sellitem One_Eyed_Glass;
+	sellitem Useless_Weight;
 	
 	// Warlock spell books
 	sellitem 6189;
