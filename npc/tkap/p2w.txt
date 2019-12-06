@@ -17,6 +17,7 @@ OnInit:
 	5361,
 	5564,
 	5898,
+	5902,	// Harvester Hat
 	5906,	// Oni horns
 	5966,
 	5973,
